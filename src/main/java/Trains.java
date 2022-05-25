@@ -6,6 +6,7 @@ import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 import model.RailwayIntersection;
 import model.RailwaySegment;
+import model.RailwayTrain;
 import org.joml.Vector2f;
 import simulation.Simulation;
 import simulation.SimulationScene;
@@ -57,6 +58,11 @@ public class Trains {
         for (RailwayIntersection intersection : intersections) {
             Simulation.getScene ().addObject (intersection);
         }
+
+        RailwayTrain train = new RailwayTrain ("train_1", 100.0f, intersections[0]);
+        train.setSpeed (100.0f);
+
+        Simulation.getScene ().addObject (train);
     }
 
     public static void main (String[] args) {

@@ -9,19 +9,38 @@ import simulation.SimulationObject;
 import static org.lwjgl.nanovg.NanoVG.*;
 import static org.lwjgl.nanovg.NanoVGGL3.*;
 
-public class RailwaySegment extends SimulationObject implements IRenderableObject {
+public class RailwaySegment extends RailwayFragment implements IRenderableObject {
     private final static NVGColor COlOR = GraphicsContext.colorFromRgb (255, 128, 0);
 
     private final RailwayIntersection m_startIntersection;
     private final RailwayIntersection m_endIntersection;
 
-    private Vector2f m_startPosition;
-    private Vector2f m_endPosition;
+    private final Vector2f m_startPosition;
+    private final Vector2f m_endPosition;
 
     private final float m_length;
 
+    Vector2f getDirection () {
+        Vector2f pos = new Vector2f (m_endPosition);
+        return pos.sub (m_startPosition).normalize ();
+    }
+
+    @Override
     public float getLength () {
         return m_length;
+    }
+
+    @Override
+    public RailwayFragment getNextFragment () {
+        return m_endIntersection;
+    }
+
+    public RailwayIntersection getEndIntersection () {
+        return m_endIntersection;
+    }
+
+    public RailwayIntersection getStartIntersection () {
+        return m_startIntersection;
     }
 
     public RailwaySegment (String name, RailwayIntersection start, RailwayIntersection end) {
@@ -34,6 +53,9 @@ public class RailwaySegment extends SimulationObject implements IRenderableObjec
         m_endPosition = m_endIntersection.getPosition ();
 
         m_length = m_startIntersection.getPosition ().distance (m_endIntersection.getPosition ());
+
+        m_startIntersection.addOutboundSegment (this);
+        m_endIntersection.addInboundSegment (this);
     }
 
     @Override
