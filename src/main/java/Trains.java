@@ -5,6 +5,7 @@ import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 import model.RailwayIntersection;
+import model.RailwaySegment;
 import org.joml.Vector2f;
 import simulation.Simulation;
 import simulation.SimulationScene;
@@ -30,14 +31,32 @@ public class Trains {
         Simulation.restartScene ();
         SimulationScene scene = Simulation.getScene ();
 
-        scene.addObject (new RailwayIntersection ("intersection_1", new Vector2f (100, 100)));
-        scene.addObject (new RailwayIntersection ("intersection_2", new Vector2f (200, 100)));
-        scene.addObject (new RailwayIntersection ("intersection_3", new Vector2f (300, 100)));
-        scene.addObject (new RailwayIntersection ("intersection_4", new Vector2f (400, 100)));
-        scene.addObject (new RailwayIntersection ("intersection_5", new Vector2f (100, 400)));
-        scene.addObject (new RailwayIntersection ("intersection_6", new Vector2f (200, 400)));
-        scene.addObject (new RailwayIntersection ("intersection_7", new Vector2f (300, 400)));
-        scene.addObject (new RailwayIntersection ("intersection_8", new Vector2f (400, 400)));
+        final RailwayIntersection[] intersections = {
+                new RailwayIntersection ("intersection_1", new Vector2f (200, 200)),
+                new RailwayIntersection ("intersection_2", new Vector2f (400, 100)),
+                new RailwayIntersection ("intersection_3", new Vector2f (600, 250)),
+                new RailwayIntersection ("intersection_4", new Vector2f (800, 100)),
+                new RailwayIntersection ("intersection_5", new Vector2f (100, 500)),
+                new RailwayIntersection ("intersection_6", new Vector2f (400, 300)),
+                new RailwayIntersection ("intersection_7", new Vector2f (600, 500)),
+                new RailwayIntersection ("intersection_8", new Vector2f (800, 500)),
+                new RailwayIntersection ("intersection_9", new Vector2f (250, 600))
+        };
+
+        final int[] segments = { 12, 23, 34, 16, 36, 37, 48, 51, 56, 67, 78, 79, 83, 95 };
+
+        for (int segment : segments) {
+            int from = segment / 10, to = segment % 10;
+            Simulation.getScene ().addObject (new RailwaySegment (
+                    String.format("segment_%d-%d", from, to),
+                    intersections[from - 1],
+                    intersections[to - 1]
+            ));
+        }
+
+        for (RailwayIntersection intersection : intersections) {
+            Simulation.getScene ().addObject (intersection);
+        }
     }
 
     public static void main (String[] args) {

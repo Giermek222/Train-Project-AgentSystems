@@ -45,7 +45,7 @@ public class GraphicsContext {
         glViewport (0, 0, m_bufferWidth.get (0), m_bufferHeight.get (0));
 
         // clear the viewport
-        glClearColor (0.4f, 0.5f, 0.75f, 1.0f);
+        glClearColor (0.8f, 0.8f, 0.8f, 1.0f);
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
 
