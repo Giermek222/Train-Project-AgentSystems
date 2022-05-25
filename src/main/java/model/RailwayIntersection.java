@@ -9,25 +9,26 @@ import simulation.SimulationObject;
 public class RailwayIntersection extends SimulationObject implements IPositionedObject, IRenderableObject {
     private Vector2f m_position;
 
-    public RailwayIntersection(String name) {
-        super(name);
+    public RailwayIntersection (String name) {
+        super (name);
     }
 
     @Override
-    public void setPosition(Vector2f position) {
+    public void setPosition (Vector2f position) {
         m_position = position;
     }
 
     @Override
-    public Vector2f getPosition() {
-        return new Vector2f(m_position.x, m_position.y);
+    public Vector2f getPosition () {
+        return new Vector2f (m_position.x, m_position.y);
     }
 
     @Override
-    public void glRender(GraphicsContext context) { }
+    public void glRender (GraphicsContext context) {
+    }
 
     @Override
-    public void nvgRender(long nvg) {
+    public void nvgRender (long nvg) {
 
     }
 }
