@@ -9,7 +9,7 @@ import simulation.SimulationObject;
 import static org.lwjgl.nanovg.NanoVG.*;
 
 public class RailwayTrain extends SimulationObject implements IRenderableObject {
-    private final static NVGColor COlOR = GraphicsContext.colorFromRgb (0, 255, 0);
+    private final static NVGColor COlOR = GraphicsContext.colorFromRgb (11, 102, 52);
 
     private final float m_maxSpeed;
     private float m_speed;
@@ -94,5 +94,12 @@ public class RailwayTrain extends SimulationObject implements IRenderableObject 
         nvgFillColor (nvg, COlOR);
         nvgFill (nvg);
         nvgClosePath (nvg);
+
+        // render label
+        nvgFontSize (nvg, 16.0f);
+        nvgFontFace (nvg, "font");
+        nvgTextAlign (nvg, NVG_ALIGN_MIDDLE | NVG_ALIGN_BOTTOM);
+        nvgText (nvg, pos.x, pos.y - 30, String.format ("train: %s", getName ()));
+        nvgText (nvg, pos.x, pos.y - 15, String.format ("speed: %.2f", m_speed));
     }
 }

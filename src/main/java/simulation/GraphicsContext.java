@@ -2,7 +2,11 @@ package simulation;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.nanovg.NVGColor;
+import org.lwjgl.system.MemoryUtil;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -29,6 +33,30 @@ public class GraphicsContext {
         return color;
     }
 
+    public void loadFont (String name, String file) throws RuntimeException, IOException {
+        byte [] fontBytes = null;
+
+        try (InputStream stream = getClass ().getResourceAsStream (file)) {
+            if (stream != null) {
+                fontBytes = stream.readAllBytes ();
+            }
+        }
+
+        if (fontBytes == null) {
+            throw new RuntimeException (String.format ("failed to load font %s", file));
+        }
+
+        ByteBuffer fontBuffer = MemoryUtil.memCalloc (fontBytes.length + 1);
+        fontBuffer.put (fontBytes);
+        fontBuffer.put ((byte) 0);
+        fontBuffer.flip ();
+
+        int font = nvgCreateFontMem (m_nvg, name, fontBuffer, 0);
+        if (font == -1) {
+            throw new RuntimeException (String.format ("failed to add font %s\n", name));
+        }
+    }
+
     public GraphicsContext (long window) {
         m_window = window;
 
@@ -37,6 +65,14 @@ public class GraphicsContext {
         m_bufferHeight = BufferUtils.createIntBuffer (1);
 
         m_nvg = nvgCreate (NVG_ANTIALIAS | NVG_STENCIL_STROKES);
+
+        try {
+            loadFont ("font", "/font.otf");
+        } catch (Exception e) {
+            e.printStackTrace ();
+        }
+
+        nvgFontFace (m_nvg, "font");
     }
 
     // private for this package
