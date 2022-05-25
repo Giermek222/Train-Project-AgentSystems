@@ -38,6 +38,8 @@ public class RailwayTrain extends SimulationObject implements IRenderableObject 
         return m_maxSpeed;
     }
 
+    public float getSpeed() {return  m_speed;}
+
     public void setSpeed (float speed) {
         m_speed = Math.min (Math.abs (speed), m_maxSpeed);
     }
