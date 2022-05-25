@@ -45,11 +45,10 @@ public class Simulation {
 
         GL.createCapabilities();
 
-        IntBuffer bufferWidth = BufferUtils.createIntBuffer(1);
-        IntBuffer bufferHeight = BufferUtils.createIntBuffer(1);
         long lastTick = System.currentTimeMillis(), tick, elapsed;
         float deltaTime;
 
+        GraphicsContext context = new GraphicsContext(m_window);
         while (!glfwWindowShouldClose(m_window)) {
             // calculate delta time
             tick = System.currentTimeMillis ();
@@ -57,19 +56,18 @@ public class Simulation {
             lastTick = tick;
             deltaTime = elapsed / 1000f;
 
-            glfwGetWindowSize(m_window, bufferWidth, bufferHeight);
-            glViewport(0, 0, bufferWidth.get(0), bufferHeight.get(0));
-
-            // clear the viewport
-            glClearColor(0.4f, 0.5f, 0.75f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+            context.startFrame();
 
             // rendering code goes here
 
-            glfwSwapBuffers(m_window);
-            glfwPollEvents();
+            long nvg = context.nvgBegin();
+            context.nvgEnd();
+
+            // end frame
+            context.endFrame();
         }
 
+        context.terminate();
         terminate();
     }
 

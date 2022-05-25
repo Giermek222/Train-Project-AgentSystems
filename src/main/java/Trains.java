@@ -28,7 +28,7 @@ public class Trains {
         // we want to keep the main thread for our simulation rendering
         // this is because glfw does not behave well when it is run in non-main thread apparently
         Thread agentPlatformThread = new Thread(Trains::jadeThread);
-        agentPlatformThread.start();
+        //agentPlatformThread.start();
 
         // now, we want to start the simulation
         Simulation simulation = new Simulation();
