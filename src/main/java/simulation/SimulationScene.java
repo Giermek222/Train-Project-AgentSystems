@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SimulationScene {
-    private Map<String, SimulationObject> m_objects;
+    private final Map<String, SimulationObject> m_objects;
 
-    public SimulationScene () {
+    SimulationScene () {
         m_objects = new HashMap<> ();
     }
 
@@ -19,7 +19,33 @@ public class SimulationScene {
         m_objects.put (objectName, object);
     }
 
-    public <T extends SimulationObject> T getObject (String name) {
+    public SimulationObject getObject (String name) {
+        if (m_objects.containsKey (name)) {
+            return m_objects.get (name);
+        }
+
         return null;
+    }
+
+    void update (float deltaTime) {
+        for (SimulationObject object : m_objects.values ()) {
+            object.update (deltaTime);
+        }
+    }
+
+    void glRender (GraphicsContext context) {
+        for (SimulationObject object : m_objects.values ()) {
+            if (object instanceof IRenderableObject) {
+                ((IRenderableObject) object).glRender (context);
+            }
+        }
+    }
+
+    void nvgRender (long nvg) {
+        for (SimulationObject object : m_objects.values ()) {
+            if (object instanceof IRenderableObject) {
+                ((IRenderableObject) object).nvgRender (nvg);
+            }
+        }
     }
 }

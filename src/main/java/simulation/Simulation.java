@@ -10,6 +10,16 @@ import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 public class Simulation {
+    private static SimulationScene m_scene = new SimulationScene ();
+
+    public static void restartScene () {
+        m_scene = new SimulationScene ();
+    }
+
+    public static SimulationScene getScene () {
+        return m_scene;
+    }
+
     private long m_window;
     private boolean m_initialized;
 
@@ -48,6 +58,9 @@ public class Simulation {
         long lastTick = System.currentTimeMillis (), tick, elapsed;
         float deltaTime;
 
+        // handle for nanovg
+        long nvg;
+
         GraphicsContext context = new GraphicsContext (m_window);
         while (!glfwWindowShouldClose (m_window)) {
             // calculate delta time
@@ -56,11 +69,13 @@ public class Simulation {
             lastTick = tick;
             deltaTime = elapsed / 1000f;
 
+            getScene ().update (deltaTime);
+
             context.startFrame ();
+            getScene ().glRender (context);
 
-            // rendering code goes here
-
-            long nvg = context.nvgBegin ();
+            nvg = context.nvgBegin ();
+            getScene ().nvgRender (nvg);
             context.nvgEnd ();
 
             // end frame

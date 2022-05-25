@@ -11,6 +11,5 @@ public abstract class SimulationObject {
         m_name = name;
     }
 
-    public void update (float deltaTime) {
-    }
+    public void update (float deltaTime) { }
 }

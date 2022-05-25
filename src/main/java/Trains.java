@@ -4,7 +4,10 @@ import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
+import model.RailwayIntersection;
+import org.joml.Vector2f;
 import simulation.Simulation;
+import simulation.SimulationScene;
 
 public class Trains {
     // this is the main jade entry point function
@@ -23,7 +26,23 @@ public class Trains {
         }
     }
 
+    private static void loadSimulation () {
+        Simulation.restartScene ();
+        SimulationScene scene = Simulation.getScene ();
+
+        scene.addObject (new RailwayIntersection ("intersection_1", new Vector2f (100, 100)));
+        scene.addObject (new RailwayIntersection ("intersection_2", new Vector2f (200, 100)));
+        scene.addObject (new RailwayIntersection ("intersection_3", new Vector2f (300, 100)));
+        scene.addObject (new RailwayIntersection ("intersection_4", new Vector2f (400, 100)));
+        scene.addObject (new RailwayIntersection ("intersection_5", new Vector2f (100, 400)));
+        scene.addObject (new RailwayIntersection ("intersection_6", new Vector2f (200, 400)));
+        scene.addObject (new RailwayIntersection ("intersection_7", new Vector2f (300, 400)));
+        scene.addObject (new RailwayIntersection ("intersection_8", new Vector2f (400, 400)));
+    }
+
     public static void main (String[] args) {
+        loadSimulation ();
+
         // create a thread to run jade in
         // we want to keep the main thread for our simulation rendering
         // this is because glfw does not behave well when it is run in non-main thread apparently

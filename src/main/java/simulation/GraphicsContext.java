@@ -1,6 +1,7 @@
 package simulation;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.nanovg.NVGColor;
 
 import java.nio.IntBuffer;
 
@@ -16,6 +17,17 @@ public class GraphicsContext {
     private final long m_nvg;
     private final IntBuffer m_bufferWidth;
     private final IntBuffer m_bufferHeight;
+
+    public static NVGColor colorFromRgb (int r, int g, int b) {
+        NVGColor color = NVGColor.create ();
+
+        color.r (r / 255f);
+        color.g (g / 255f);
+        color.b (b / 255f);
+        color.a (1.0f);
+
+        return color;
+    }
 
     public GraphicsContext (long window) {
         m_window = window;
