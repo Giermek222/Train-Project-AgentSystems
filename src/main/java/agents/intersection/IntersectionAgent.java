@@ -7,7 +7,7 @@ import simulation.Simulation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InsersectionAgent extends Agent {
+public class IntersectionAgent extends Agent {
 
     private RailwayIntersection intersection;
     private List<String>  outgoing = new ArrayList<>();

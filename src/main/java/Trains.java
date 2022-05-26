@@ -1,3 +1,4 @@
+import jade.core.Agent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
@@ -7,9 +8,14 @@ import jade.wrapper.StaleProxyException;
 import model.RailwayIntersection;
 import model.RailwaySegment;
 import model.RailwayTrain;
+import org.joml.Intersectiond;
 import org.joml.Vector2f;
 import simulation.Simulation;
 import simulation.SimulationScene;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Trains {
     // this is the main jade entry point function
@@ -23,6 +29,36 @@ public class Trains {
         try {
             AgentController rma = mc.createNewAgent ("rma", "jade.tools.rma.rma", null);
             rma.start ();
+
+            for (int i = 1; i <= 9; ++i) {
+                String intersectionName = String.format ("intersection_%d", i);
+                RailwayIntersection intersection = (RailwayIntersection) Simulation.getScene ().getObject (intersectionName);
+                ArrayList<String> args = new ArrayList<> ();
+
+                args.add (intersectionName);
+                for (Iterator<RailwaySegment> it = intersection.outbound (); it.hasNext (); ) {
+                    RailwaySegment segment = it.next ();
+                    args.add (segment.getName ());
+                }
+
+                AgentController controller = mc.createNewAgent (intersectionName, "agents.intersection.TestIntersectionAgent", args.toArray ());
+                controller.start ();
+            }
+
+            int[] trainRoute = { 1, 2, 3, 4, 8, 3, 6, 7, 9, 5, 1 };
+            ArrayList<String> routeElements = new ArrayList<> ();
+            routeElements.add ("train_1");
+            
+            for (int i = 0; i < trainRoute.length - 1; ++i) {
+                String intersection = String.format ("intersection_%d", trainRoute[i]);
+                String route = String.format ("segment_%d-%d", trainRoute[i], trainRoute[i + 1]);
+
+                routeElements.add (intersection);
+                routeElements.add (route);
+            }
+
+            AgentController trainController = mc.createNewAgent ("train_1", "agents.train.TrainAgent", routeElements.toArray ());
+            trainController.start ();
         } catch (StaleProxyException exception) {
             exception.printStackTrace ();
         }
@@ -60,9 +96,12 @@ public class Trains {
         }
 
         RailwayTrain train = new RailwayTrain ("train_1", 100.0f, intersections[0]);
+        RailwayTrain train2 = new RailwayTrain ("train_2", 100.0f, intersections[5]);
         train.setSpeed (100.0f);
+        train2.setSpeed (100.0f);
 
         Simulation.getScene ().addObject (train);
+        Simulation.getScene ().addObject (train2);
     }
 
     public static void main (String[] args) {
