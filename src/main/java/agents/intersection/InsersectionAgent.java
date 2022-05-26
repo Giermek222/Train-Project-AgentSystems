@@ -16,8 +16,8 @@ public class InsersectionAgent extends Agent {
     protected void setup() {
         super.setup();
         final Object[] params = getArguments();
-        if (params.length < 3) {
-            System.out.println("Usage [train name ], [at least two intersections separated by comas]");
+        if (params.length < 2) {
+            System.out.println("Usage [train name ], [intersections separated by comas]");
             doDelete();
         }
         String intersectionName = params[0].toString();
