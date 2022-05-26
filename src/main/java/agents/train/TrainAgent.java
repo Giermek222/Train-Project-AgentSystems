@@ -5,13 +5,15 @@ import jade.core.Agent;
 import model.RailwayTrain;
 import simulation.Simulation;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.Stack;
 
 public class TrainAgent extends Agent {
 
     private RailwayTrain train;
-    private final Stack<String> intersections = new Stack<>();
-    private final Stack<String> segments = new Stack<>();
+    private final Queue<String> intersections = new ArrayDeque<>();
+    private final Queue<String> segments = new ArrayDeque<>();
 
     @Override
     protected void setup() {
@@ -30,7 +32,7 @@ public class TrainAgent extends Agent {
                 segments.add(params[i].toString());
         }
 
-        addBehaviour(AnnounceArrivalToIntersection.create(intersections.pop(), segments.pop(), train.getSpeed()));
+        addBehaviour(AnnounceArrivalToIntersection.create(intersections.remove(), segments.remove(), train.getSpeed()));
 
 
 

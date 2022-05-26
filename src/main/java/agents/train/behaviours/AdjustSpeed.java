@@ -9,6 +9,7 @@ import model.RailwayTrain;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.Stack;
 
 import static jade.lang.acl.ACLMessage.ACCEPT_PROPOSAL;
@@ -18,17 +19,17 @@ public class AdjustSpeed extends CyclicBehaviour {
 
     private final MessageTemplate messageTemplate = MessageTemplate.MatchPerformative(ACCEPT_PROPOSAL);
     private final RailwayTrain train;
-    private final Stack<String> intersections;
-    private final Stack<String> segments;
+private final Queue<String> intersections;
+    private final Queue<String> segments;
 
-    public AdjustSpeed(RailwayTrain train, Stack<String> intersections, Stack<String> segments) {
+    public AdjustSpeed(RailwayTrain train, Queue<String> intersections, Queue<String> segments) {
 
         this.train = train;
         this.intersections = intersections;
         this.segments = segments;
     }
 
-    public static AdjustSpeed create( RailwayTrain train, Stack<String> intersections, Stack<String> segments) {
+    public static AdjustSpeed create( RailwayTrain train, Queue<String> intersections, Queue<String> segments) {
         return new AdjustSpeed(train, intersections, segments);
     }
 
@@ -42,7 +43,14 @@ public class AdjustSpeed extends CyclicBehaviour {
                 train.setSpeed(params.speed);
 
                 sleep(params.time);
-                myAgent.addBehaviour(AnnounceArrivalToIntersection.create(segments.pop(),intersections.pop(), train.getSpeed()));
+                if (segments.isEmpty() == false && intersections.isEmpty() == false)
+                {
+                    myAgent.addBehaviour(AnnounceArrivalToIntersection.create(segments.remove(),intersections.remove(), train.getSpeed()));
+                }
+                else
+                {
+                    myAgent.doDelete();
+                }
 
             } catch (UnreadableException e) {
                 throw new RuntimeException(e);
