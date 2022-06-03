@@ -97,5 +97,12 @@ public class RailwayIntersection extends RailwayFragment implements IPositionedO
         nvgFillColor (nvg, COlOR);
         nvgFill (nvg);
         nvgClosePath (nvg);
+
+        // render label
+        nvgFontSize (nvg, 16.0f);
+        nvgFontFace (nvg, "font");
+        nvgTextAlign (nvg, NVG_ALIGN_MIDDLE | NVG_ALIGN_BOTTOM);
+        nvgText (nvg, m_position.x, m_position.y - 30, String.format ("%s", getName ()));
+        nvgText (nvg, m_position.x, m_position.y - 15, String.format ("to: %s", getNextFragment ().getNextFragment ().getName ()));
     }
 }

@@ -1,13 +1,14 @@
 package simulation;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SimulationScene {
     private final Map<String, SimulationObject> m_objects;
 
     SimulationScene () {
-        m_objects = new HashMap<> ();
+        m_objects = new LinkedHashMap<>();
     }
 
     public void addObject (SimulationObject object) {
