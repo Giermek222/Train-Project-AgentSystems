@@ -1,16 +1,14 @@
 package agents.train.behaviours;
 
-import agents.messageparams.IntersectionResponse;
+import model.messageparams.IntersectionResponse;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 import model.RailwayTrain;
 
-import java.io.IOException;
 import java.util.Objects;
 import java.util.Queue;
-import java.util.Stack;
 
 import static jade.lang.acl.ACLMessage.ACCEPT_PROPOSAL;
 import static java.lang.Thread.sleep;

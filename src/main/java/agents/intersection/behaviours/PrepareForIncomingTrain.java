@@ -1,9 +1,7 @@
 package agents.intersection.behaviours;
 
-import agents.messageparams.IntersectionResponse;
-import agents.messageparams.TrainParams;
-import agents.train.behaviours.AnnounceArrivalToIntersection;
-import jade.core.AID;
+import model.messageparams.IntersectionResponse;
+import model.messageparams.TrainParams;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;

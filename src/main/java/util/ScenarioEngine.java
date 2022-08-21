@@ -1,0 +1,82 @@
+package util;
+
+import jade.core.Profile;
+import jade.core.ProfileImpl;
+import jade.core.Runtime;
+import jade.wrapper.ContainerController;
+import jade.wrapper.StaleProxyException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class ScenarioEngine {
+    private Runtime runtime;
+    private Profile profile;
+    private ContainerController containerController;
+
+    public ScenarioEngine() throws StaleProxyException {
+        runtime = Runtime.instance ();
+        profile = new ProfileImpl("localhost", 8888, null);
+        containerController = runtime.createMainContainer(profile);
+
+
+    }
+
+
+    public void runScenario(int scenario_id) throws FileNotFoundException, StaleProxyException {
+
+
+
+        //parsing a CSV file into Scanner class constructor
+
+        Scanner sc = new Scanner(new File("src/main/resources/scenario" + scenario_id +".csv"));
+        sc.useDelimiter(";");
+        while (sc.hasNext())
+        {
+            String agentClass = sc.next();
+            if (agentClass.equals("segment")) {
+                CreateSegment(sc.next());
+            }
+            else if (agentClass.equals("intersection")) {
+                CreateIntersection(sc.next());
+            }
+            else if (agentClass.equals("train")) {
+                CreateTrain(sc.next());
+            }
+            else if (agentClass.equals("planner")) {
+                CreatePlanner(sc.next());
+            }
+
+        }
+        sc.close();
+        containerController.createNewAgent("Gui Guy", "jade.tools.rma.rma", null).start();
+
+    }
+
+    private void CreateSegment(String agentParams) throws StaleProxyException {
+        //Object[] params = GetAgentParams(agentParams);
+        //containerController.createNewAgent(Arrays.stream(params).findFirst().get().toString(), "jade.tools.rma.rma", params ).start();
+
+    }
+
+    private void CreateIntersection(String agentParams) throws StaleProxyException {
+        Object[] params = GetAgentParams(agentParams);
+        containerController.createNewAgent(Arrays.stream(params).findFirst().get().toString(), "agents.intersection.InsersectionAgent", params ).start();
+    }
+    private void CreateTrain(String agentParams) throws StaleProxyException {
+        Object[] params = GetAgentParams(agentParams);
+        containerController.createNewAgent(Arrays.stream(params).findFirst().get().toString(), "agents.train.TrainAgent", params ).start();
+    }
+    private void CreatePlanner(String agentParams) throws StaleProxyException {
+        Object[] params = GetAgentParams(agentParams);
+        containerController.createNewAgent(Arrays.stream(params).findFirst().get().toString(), "jade.tools.rma.rma", params ).start();
+    }
+
+    private Object[] GetAgentParams(String agentParams) {
+        return agentParams.split("\\,");
+    }
+
+}
+

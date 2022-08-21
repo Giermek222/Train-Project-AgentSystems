@@ -1,4 +1,4 @@
-package agents.messageparams;
+package model.messageparams;
 
 import java.io.Serializable;
 
