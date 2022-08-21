@@ -28,9 +28,6 @@ public class ScenarioEngine {
     public void runScenario(int scenario_id) throws FileNotFoundException, StaleProxyException {
 
 
-
-        //parsing a CSV file into Scanner class constructor
-
         Scanner sc = new Scanner(new File("src/main/resources/scenario" + scenario_id +".csv"));
         sc.useDelimiter(";");
         while (sc.hasNext())
@@ -56,8 +53,8 @@ public class ScenarioEngine {
     }
 
     private void CreateSegment(String agentParams) throws StaleProxyException {
-        //Object[] params = GetAgentParams(agentParams);
-        //containerController.createNewAgent(Arrays.stream(params).findFirst().get().toString(), "jade.tools.rma.rma", params ).start();
+        Object[] params = GetAgentParams(agentParams);
+        containerController.createNewAgent(Arrays.stream(params).findFirst().get().toString(), "agents.segment.SegmentAgent", params ).start();
 
     }
 
