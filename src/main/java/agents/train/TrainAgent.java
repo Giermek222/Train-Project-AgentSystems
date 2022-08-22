@@ -33,6 +33,7 @@ public class TrainAgent extends Agent {
         }
 
         addBehaviour(AnnounceArrivalToIntersection.create(intersections.remove(), segments.remove(), train.getSpeed()));
+        train.setSpeed(100);
 
 
 

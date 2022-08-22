@@ -1,6 +1,6 @@
 package agents.train.behaviours;
 
-import agents.messageparams.TrainParams;
+import model.messageparams.TrainParams;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;

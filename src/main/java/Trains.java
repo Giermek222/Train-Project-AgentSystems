@@ -3,6 +3,7 @@ import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
+import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
 import model.RailwayIntersection;
 import model.RailwaySegment;
@@ -10,22 +11,26 @@ import model.RailwayTrain;
 import org.joml.Vector2f;
 import simulation.Simulation;
 import simulation.SimulationScene;
+import util.ScenarioEngine;
+
+import java.io.FileNotFoundException;
 
 public class Trains {
     // this is the main jade entry point function
     // it can be used to set up the platform, there is no need to use any additional agents for setup
     private static void jadeThread () {
-        Runtime runtime = Runtime.instance ();
-        Profile profileMain = new ProfileImpl (null, 8888, null);
 
-        AgentContainer mc = runtime.createMainContainer (profileMain);
-
-        try {
-            AgentController rma = mc.createNewAgent ("rma", "jade.tools.rma.rma", null);
-            rma.start ();
-        } catch (StaleProxyException exception) {
-            exception.printStackTrace ();
+        try
+        {
+            ScenarioEngine scenarioEngine = new ScenarioEngine();
+            scenarioEngine.runScenario(1);
         }
+        catch ( FileNotFoundException | StaleProxyException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     private static void loadSimulation () {
@@ -60,7 +65,7 @@ public class Trains {
         }
 
         RailwayTrain train = new RailwayTrain ("train_1", 100.0f, intersections[0]);
-        train.setSpeed (100.0f);
+        train.setSpeed (0.0f);
 
         Simulation.getScene ().addObject (train);
     }
