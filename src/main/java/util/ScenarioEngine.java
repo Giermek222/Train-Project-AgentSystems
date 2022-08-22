@@ -68,7 +68,7 @@ public class ScenarioEngine {
     }
     private void CreatePlanner(String agentParams) throws StaleProxyException {
         Object[] params = GetAgentParams(agentParams);
-        containerController.createNewAgent(Arrays.stream(params).findFirst().get().toString(), "jade.tools.rma.rma", params ).start();
+        containerController.createNewAgent(Arrays.stream(params).findFirst().get().toString(), "agents.planner.PlannerAgent", params ).start();
     }
 
     private Object[] GetAgentParams(String agentParams) {
