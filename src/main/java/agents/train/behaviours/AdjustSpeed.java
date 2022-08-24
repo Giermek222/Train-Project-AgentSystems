@@ -1,11 +1,11 @@
 package agents.train.behaviours;
 
-import model.messageparams.IntersectionResponse;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 import model.RailwayTrain;
+import model.messageparams.IntersectionResponse;
 
 import java.util.Objects;
 import java.util.Queue;
@@ -17,18 +17,17 @@ public class AdjustSpeed extends CyclicBehaviour {
 
     private final MessageTemplate messageTemplate = MessageTemplate.MatchPerformative(ACCEPT_PROPOSAL);
     private final RailwayTrain train;
-private final Queue<String> intersections;
+
     private final Queue<String> segments;
 
-    public AdjustSpeed(RailwayTrain train, Queue<String> intersections, Queue<String> segments) {
+    public AdjustSpeed(RailwayTrain train, Queue<String> segments) {
 
         this.train = train;
-        this.intersections = intersections;
         this.segments = segments;
     }
 
-    public static AdjustSpeed create( RailwayTrain train, Queue<String> intersections, Queue<String> segments) {
-        return new AdjustSpeed(train, intersections, segments);
+    public static AdjustSpeed create( RailwayTrain train,  Queue<String> segments) {
+        return new AdjustSpeed(train, segments);
     }
 
     @Override
@@ -37,25 +36,20 @@ private final Queue<String> intersections;
 
         if (Objects.nonNull(message)) {
             try {
-                final IntersectionResponse params = (IntersectionResponse) message.getContentObject();
-                train.setSpeed(params.speed);
+                System.out.println("They know I'm coming. Time to wait now");
 
-                sleep(params.time);
-                if (segments.isEmpty() == false && intersections.isEmpty() == false)
-                {
-                    myAgent.addBehaviour(AnnounceArrivalToIntersection.create(segments.remove(),intersections.remove(), train.getSpeed()));
-                }
-                else
-                {
-                    myAgent.doDelete();
-                }
+                IntersectionResponse responseParams = (IntersectionResponse) message.getContentObject();
+                train.setSpeed(responseParams.speed);
+                myAgent.doWait(responseParams.time);
+
+                ACLMessage response =  new ACLMessage(ACLMessage.AGREE);
+                response.addReceiver(message.getSender());
+                response.setContent(segments.remove());
+                myAgent.send(response);
 
             } catch (UnreadableException e) {
                 throw new RuntimeException(e);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
             }
-
         }
     }
 }
