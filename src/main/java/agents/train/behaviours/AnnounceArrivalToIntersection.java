@@ -1,40 +1,53 @@
 package agents.train.behaviours;
 
-import model.messageparams.TrainParams;
 import jade.core.AID;
-import jade.core.behaviours.OneShotBehaviour;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
+import model.RailwayTrain;
 
-import java.io.IOException;
+import java.util.Objects;
+import java.util.Queue;
 
-public class AnnounceArrivalToIntersection extends OneShotBehaviour {
+import static jade.lang.acl.ACLMessage.CONFIRM;
 
-   private final String nextIntersection;
-   private final String nextSegment;
+public class AnnounceArrivalToIntersection extends CyclicBehaviour {
+    private final RailwayTrain train;
+
+    private final MessageTemplate messageTemplate = MessageTemplate.MatchPerformative(CONFIRM);
+   private final Queue<String> intersections;
+   private final Queue<String> segmentrs;
    private final Float currentSpeed;
 
-    public AnnounceArrivalToIntersection(String intersectionName, String segmentName, float speed) {
-        nextIntersection = intersectionName;
-        nextSegment = segmentName;
+    public AnnounceArrivalToIntersection(RailwayTrain train, Queue<String> intersectionName, Queue<String> segmentName, float speed) {
+        this.train = train;
+        intersections = intersectionName;
+        segmentrs = segmentName;
         currentSpeed = speed;
     }
 
-    public static AnnounceArrivalToIntersection create(String intersectionName, String segment, float speed) {
-        return new AnnounceArrivalToIntersection(intersectionName, segment, speed);
+    public static AnnounceArrivalToIntersection create(RailwayTrain train, Queue<String> intersectionName, Queue<String> segment, float speed) {
+        return new AnnounceArrivalToIntersection(train, intersectionName, segment, speed);
      }
 
     @Override
     public void action() {
-        final ACLMessage proposal = new ACLMessage(ACLMessage.PROPOSE);
-        proposal.addReceiver(new AID(nextIntersection, AID.ISLOCALNAME));
-        TrainParams params = new TrainParams(nextSegment, currentSpeed);
+        final ACLMessage message = myAgent.receive(messageTemplate);
 
-        try {
-            proposal.setContentObject(params);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (Objects.nonNull(message)) {
+            if (segmentrs.isEmpty())
+            {
+                System.out.println("I have arrived at final station:" + intersections.remove());
+                train.setSpeed(0);
+            }
+            else
+            {
+                System.out.println("sending message to next intersection:" + intersections.peek());
+                final ACLMessage proposal = new ACLMessage(ACLMessage.INFORM);
+                proposal.addReceiver(new AID(intersections.remove(), AID.ISLOCALNAME));
+                proposal.setContent(currentSpeed.toString());
+                myAgent.send(proposal);
+            }
         }
-
-        myAgent.send(proposal);
     }
 }

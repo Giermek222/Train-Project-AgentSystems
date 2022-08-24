@@ -17,21 +17,21 @@ import java.util.Objects;
 
 import static jade.lang.acl.ACLMessage.*;
 
-public class PrepareForIncomingTrain extends CyclicBehaviour {
+public class ReceiveArrivalInfo extends CyclicBehaviour {
 
-    private final MessageTemplate messageTemplate = MessageTemplate.MatchPerformative(PROPOSE);
+    private final MessageTemplate messageTemplate = MessageTemplate.MatchPerformative(INFORM);
     private final RailwayIntersection intersection;
 
     private final List<Pair<String, LocalDateTime>> scheduledTrains = new ArrayList<Pair<String, LocalDateTime>>();
 
 
 
-    public PrepareForIncomingTrain(RailwayIntersection intersection) {
+    public ReceiveArrivalInfo(RailwayIntersection intersection) {
         this.intersection = intersection;
     }
 
-    public static PrepareForIncomingTrain create(RailwayIntersection intersection) {
-        return new PrepareForIncomingTrain(intersection);
+    public static ReceiveArrivalInfo create(RailwayIntersection intersection) {
+        return new ReceiveArrivalInfo(intersection);
     }
 
     @Override
@@ -40,21 +40,20 @@ public class PrepareForIncomingTrain extends CyclicBehaviour {
 
         if (Objects.nonNull(message)) {
             try {
-                final TrainParams params = (TrainParams) message.getContentObject();
-                intersection.setNextSegmentByName(params.segment);
-                float arrivalTime = intersection.getLength() / params.speed;
+                System.out.println("[" + message.getSender() + "] is approaching me");
+                final String speed =  message.getContent();
+
+                float arrivalTime = intersection.getLength() / Float.parseFloat(speed);
                 LocalDateTime time = LocalDateTime.now();
-                time.plusSeconds((long) arrivalTime);
                 scheduledTrains.add(new Pair<>(message.getSender().getName(), time));
-                IntersectionResponse responseObject = new IntersectionResponse(params.speed, (long) arrivalTime);
+                IntersectionResponse responseObject = new IntersectionResponse(Float.parseFloat(speed), (long) arrivalTime);
+
 
                 final ACLMessage response = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
                 response.addReceiver(message.getSender());
                 response.setContentObject(responseObject);
                 myAgent.send(response);
 
-            } catch (UnreadableException e) {
-                throw new RuntimeException(e);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

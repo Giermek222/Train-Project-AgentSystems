@@ -1,5 +1,7 @@
 package agents.intersection;
 
+import agents.intersection.behaviours.ChangeDirection;
+import agents.intersection.behaviours.ReceiveArrivalInfo;
 import jade.core.Agent;
 import model.RailwayIntersection;
 import simulation.Simulation;
@@ -26,5 +28,8 @@ public class InsersectionAgent extends Agent {
 
             outgoing.add(params[i].toString());
         }
+
+        addBehaviour(ReceiveArrivalInfo.create(intersection));
+        addBehaviour(ChangeDirection.create(intersection));
     }
 }
