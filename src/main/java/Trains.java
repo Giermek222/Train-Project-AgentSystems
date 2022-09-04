@@ -39,8 +39,8 @@ public class Trains {
 
         final RailwayIntersection[] intersections = {
                 new RailwayIntersection ("intersection_1", new Vector2f (200, 200)),
-                new RailwayIntersection ("intersection_2", new Vector2f (400, 100)),
-                new RailwayIntersection ("intersection_3", new Vector2f (600, 250)),
+                new RailwayIntersection ("intersection_2", new Vector2f (200, 100)),
+                new RailwayIntersection ("intersection_3", new Vector2f (600, 300)),
                 new RailwayIntersection ("intersection_4", new Vector2f (800, 100)),
                 new RailwayIntersection ("intersection_5", new Vector2f (100, 500)),
                 new RailwayIntersection ("intersection_6", new Vector2f (400, 300)),
@@ -64,10 +64,14 @@ public class Trains {
             Simulation.getScene ().addObject (intersection);
         }
 
-        RailwayTrain train = new RailwayTrain ("train_1", 100.0f, intersections[0]);
-        train.setSpeed (0.0f);
+        //RailwayTrain train = new RailwayTrain ("train_1", 100.0f, intersections[0]);
+        //train.setSpeed (0.0f);
 
-        Simulation.getScene ().addObject (train);
+        RailwayTrain train2 = new RailwayTrain ("train_2", 100.0f, intersections[0]);
+        train2.setSpeed (0.0f);
+
+        //Simulation.getScene ().addObject (train);
+        Simulation.getScene ().addObject (train2);
     }
 
     public static void main (String[] args) {

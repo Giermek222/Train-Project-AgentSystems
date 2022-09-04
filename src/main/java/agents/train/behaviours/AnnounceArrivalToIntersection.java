@@ -1,11 +1,15 @@
 package agents.train.behaviours;
 
+import agents.train.TrainAgent;
+import agents.train.helpers.SendMessageToIntersection;
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import model.RailwayTrain;
+import model.messageparams.TrainToIntersectionInfo;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Queue;
 
@@ -19,6 +23,7 @@ public class AnnounceArrivalToIntersection extends CyclicBehaviour {
    private final Queue<String> segmentrs;
    private final Float currentSpeed;
 
+   private final SendMessageToIntersection sendMessageToIntersection = new SendMessageToIntersection();
     public AnnounceArrivalToIntersection(RailwayTrain train, Queue<String> intersectionName, Queue<String> segmentName, float speed) {
         this.train = train;
         intersections = intersectionName;
@@ -35,19 +40,11 @@ public class AnnounceArrivalToIntersection extends CyclicBehaviour {
         final ACLMessage message = myAgent.receive(messageTemplate);
 
         if (Objects.nonNull(message)) {
-            if (segmentrs.isEmpty())
-            {
-                System.out.println("I have arrived at final station:" + intersections.remove());
-                train.setSpeed(0);
-            }
-            else
-            {
-                System.out.println("sending message to next intersection:" + intersections.peek());
-                final ACLMessage proposal = new ACLMessage(ACLMessage.INFORM);
-                proposal.addReceiver(new AID(intersections.remove(), AID.ISLOCALNAME));
-                proposal.setContent(currentSpeed.toString());
-                myAgent.send(proposal);
-            }
+            float current_speed = train.getSpeed();
+            train.setSpeed(0);
+            myAgent.doWait(1000);
+            train.setSpeed(current_speed);
+            sendMessageToIntersection.send((TrainAgent) myAgent, segmentrs, intersections, train);
         }
     }
 }

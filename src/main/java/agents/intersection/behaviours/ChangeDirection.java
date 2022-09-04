@@ -3,18 +3,11 @@ package agents.intersection.behaviours;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.lang.acl.UnreadableException;
 import model.RailwayIntersection;
-import model.messageparams.IntersectionResponse;
-import model.messageparams.TrainParams;
-import org.javatuples.Pair;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static jade.lang.acl.ACLMessage.AGREE;
-import static jade.lang.acl.ACLMessage.INFORM;
 
 public class ChangeDirection extends CyclicBehaviour {
 
