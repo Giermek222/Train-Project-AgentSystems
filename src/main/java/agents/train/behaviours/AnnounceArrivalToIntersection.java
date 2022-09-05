@@ -4,8 +4,12 @@ import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import model.RailwayIntersection;
 import model.RailwayTrain;
+import model.messageparams.TrainToIntersectionInfo;
+import simulation.Simulation;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Queue;
 
@@ -35,17 +39,31 @@ public class AnnounceArrivalToIntersection extends CyclicBehaviour {
         final ACLMessage message = myAgent.receive(messageTemplate);
 
         if (Objects.nonNull(message)) {
-            if (segmentrs.isEmpty())
+
+            myAgent.doWait(100);
+
+            if (message.getContent().equals("final station"))
             {
-                System.out.println("I have arrived at final station:" + intersections.remove());
+                myAgent.doWait(100);
                 train.setSpeed(0);
             }
             else
             {
                 System.out.println("sending message to next intersection:" + intersections.peek());
                 final ACLMessage proposal = new ACLMessage(ACLMessage.INFORM);
+                TrainToIntersectionInfo messageContent = new TrainToIntersectionInfo();
+                messageContent.setMaxSpeed(train.getMaxSpeed());
+                messageContent.setPreviousIntersection(train.getPreviousIntersection().getName());
+
+                RailwayIntersection last = (RailwayIntersection) Simulation.getScene().getObject(intersections.peek());
+                train.setPreviousIntersection(last);
                 proposal.addReceiver(new AID(intersections.remove(), AID.ISLOCALNAME));
-                proposal.setContent(currentSpeed.toString());
+
+                try {
+                    proposal.setContentObject(messageContent);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 myAgent.send(proposal);
             }
         }

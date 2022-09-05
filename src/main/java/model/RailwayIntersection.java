@@ -48,11 +48,12 @@ public class RailwayIntersection extends RailwayFragment implements IPositionedO
 
     public void setNextSegmentByName (String name) {
         for (RailwaySegment segment : m_outbound) {
-            if (segment.getName ().equals ("segment_" + name.charAt(0) + "-" + name.charAt(1))) {
+            if (segment.getName().equals("segment_" + name.charAt(0) + "-" + name.charAt(1))) {
                 m_nextSegment = segment;
                 return;
             }
         }
+        System.out.println("ERROR You cannot go in that direction");
     }
 
     public Iterator<RailwaySegment> outbound () {

@@ -18,6 +18,8 @@ public class RailwayTrain extends SimulationObject implements IRenderableObject 
     private RailwayFragment m_railwayFragment;
     private float m_location;
 
+    private RailwayIntersection previousIntersection;
+
     void setLocation (float location) {
         m_location = location;
     }
@@ -42,6 +44,14 @@ public class RailwayTrain extends SimulationObject implements IRenderableObject 
 
     public void setSpeed (float speed) {
         m_speed = Math.min (Math.abs (speed), m_maxSpeed);
+    }
+
+    public RailwayIntersection getPreviousIntersection() {
+        return previousIntersection;
+    }
+
+    public void setPreviousIntersection(RailwayIntersection previousIntersection) {
+        this.previousIntersection = previousIntersection;
     }
 
     public RailwayTrain (String name, float maxSpeed, RailwayFragment fragment) {
