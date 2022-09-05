@@ -18,6 +18,8 @@ public class RailwaySegment extends RailwayFragment implements IRenderableObject
 
     private final float m_length;
 
+    private boolean broken;
+
     Vector2f getDirection () {
         Vector2f pos = new Vector2f (m_endPosition);
         return pos.sub (m_startPosition).normalize ();
@@ -41,6 +43,14 @@ public class RailwaySegment extends RailwayFragment implements IRenderableObject
         return m_startIntersection;
     }
 
+    public boolean isBroken() {
+        return broken;
+    }
+
+    public void setBroken(boolean newStatus) {
+        broken = newStatus;
+    }
+
     public RailwaySegment (String name, RailwayIntersection start, RailwayIntersection end) {
         super (name);
 
@@ -54,6 +64,8 @@ public class RailwaySegment extends RailwayFragment implements IRenderableObject
 
         m_startIntersection.addOutboundSegment (this);
         m_endIntersection.addInboundSegment (this);
+
+        broken = true;
     }
 
     @Override

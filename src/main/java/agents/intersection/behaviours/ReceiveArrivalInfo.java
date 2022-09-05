@@ -73,7 +73,6 @@ public class ReceiveArrivalInfo extends CyclicBehaviour {
             } catch (IOException | UnreadableException e) {
                 throw new RuntimeException(e);
             }
-
         }
     }
 
