@@ -39,15 +39,12 @@ public class AnnounceArrivalToIntersection extends CyclicBehaviour {
         final ACLMessage message = myAgent.receive(messageTemplate);
 
         if (Objects.nonNull(message)) {
-            float current_speed = train.getSpeed();
-            train.setSpeed(0);
-            myAgent.doWait(1000);
-            train.setSpeed(current_speed);
 
             myAgent.doWait(100);
 
             if (message.getContent().equals("final station"))
             {
+                myAgent.doWait(100);
                 train.setSpeed(0);
             }
             else

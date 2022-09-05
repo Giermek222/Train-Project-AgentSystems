@@ -64,13 +64,13 @@ public class Trains {
             Simulation.getScene ().addObject (intersection);
         }
 
-        //RailwayTrain train = new RailwayTrain ("train_1", 100.0f, intersections[0]);
-        //train.setSpeed (0.0f);
+        RailwayTrain train = new RailwayTrain ("train_1", 100.0f, intersections[6]);
+        train.setSpeed (0.0f);
 
         RailwayTrain train2 = new RailwayTrain ("train_2", 100.0f, intersections[0]);
         train2.setSpeed (0.0f);
 
-        //Simulation.getScene ().addObject (train);
+        Simulation.getScene ().addObject (train);
         Simulation.getScene ().addObject (train2);
     }
 

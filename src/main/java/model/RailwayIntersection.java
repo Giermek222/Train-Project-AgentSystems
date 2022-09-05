@@ -53,6 +53,7 @@ public class RailwayIntersection extends RailwayFragment implements IPositionedO
                 return;
             }
         }
+        System.out.println("ERROR You cannot go in that direction");
     }
 
     public Iterator<RailwaySegment> outbound () {

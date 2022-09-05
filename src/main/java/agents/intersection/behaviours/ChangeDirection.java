@@ -30,7 +30,7 @@ public class ChangeDirection extends CyclicBehaviour {
         if (Objects.nonNull(message)) {
             final ACLMessage response = new ACLMessage(ACLMessage.CONFIRM);
             final String segment = message.getContent();
-            if (!segment.equals("Final station"))
+            if (segment.equals("Final station"))
             {
                 System.out.println("[" + myAgent.getLocalName() + "] This train will be stopping here ");
                 response.setContent("final station");
