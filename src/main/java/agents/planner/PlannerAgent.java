@@ -1,8 +1,6 @@
 package agents.planner;
 
 import jade.core.Agent;
-import model.RailwayIntersection;
-import simulation.Simulation;
 
 import java.util.ArrayList;
 import java.util.List;

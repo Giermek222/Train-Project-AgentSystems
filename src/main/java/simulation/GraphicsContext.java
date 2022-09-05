@@ -10,11 +10,9 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL33.*;
-import static org.lwjgl.system.MemoryUtil.*;
-
 import static org.lwjgl.nanovg.NanoVG.*;
 import static org.lwjgl.nanovg.NanoVGGL3.*;
+import static org.lwjgl.opengl.GL33.*;
 
 public class GraphicsContext {
     private final long m_window;

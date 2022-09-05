@@ -1,13 +1,10 @@
 package simulation;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
 
-import java.nio.IntBuffer;
-
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL33.*;
-import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.opengl.GL33.GL_TRUE;
+import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Simulation {
     private static SimulationScene m_scene = new SimulationScene ();
