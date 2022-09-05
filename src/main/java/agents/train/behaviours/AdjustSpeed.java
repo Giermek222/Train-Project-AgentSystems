@@ -11,7 +11,6 @@ import java.util.Objects;
 import java.util.Queue;
 
 import static jade.lang.acl.ACLMessage.ACCEPT_PROPOSAL;
-import static java.lang.Thread.sleep;
 
 public class AdjustSpeed extends CyclicBehaviour {
 

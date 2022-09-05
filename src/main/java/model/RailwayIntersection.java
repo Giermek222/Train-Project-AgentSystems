@@ -5,14 +5,12 @@ import org.lwjgl.nanovg.NVGColor;
 import simulation.GraphicsContext;
 import simulation.IPositionedObject;
 import simulation.IRenderableObject;
-import simulation.SimulationObject;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import static org.lwjgl.nanovg.NanoVG.*;
-import static org.lwjgl.nanovg.NanoVGGL3.*;
 
 public class RailwayIntersection extends RailwayFragment implements IPositionedObject, IRenderableObject {
     private final static NVGColor COlOR = GraphicsContext.colorFromRgb (255, 0, 0);

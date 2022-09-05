@@ -4,10 +4,8 @@ import org.joml.Vector2f;
 import org.lwjgl.nanovg.NVGColor;
 import simulation.GraphicsContext;
 import simulation.IRenderableObject;
-import simulation.SimulationObject;
 
 import static org.lwjgl.nanovg.NanoVG.*;
-import static org.lwjgl.nanovg.NanoVGGL3.*;
 
 public class RailwaySegment extends RailwayFragment implements IRenderableObject {
     private final static NVGColor COlOR = GraphicsContext.colorFromRgb (255, 128, 0);

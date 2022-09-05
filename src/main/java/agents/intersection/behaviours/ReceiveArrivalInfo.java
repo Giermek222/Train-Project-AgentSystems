@@ -12,10 +12,10 @@ import org.joml.Vector2f;
 import simulation.Simulation;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static jade.lang.acl.ACLMessage.INFORM;
 
@@ -24,7 +24,7 @@ public class ReceiveArrivalInfo extends CyclicBehaviour {
     private final MessageTemplate messageTemplate = MessageTemplate.MatchPerformative(INFORM);
     private final RailwayIntersection intersection;
 
-    private final List<Pair<String, LocalDateTime>> scheduledTrains = new ArrayList<Pair<String, LocalDateTime>>();
+    private final List<Pair<String, Long>> scheduledTrains = new ArrayList<>();
 
 
 
@@ -43,7 +43,7 @@ public class ReceiveArrivalInfo extends CyclicBehaviour {
         if (Objects.nonNull(message)) {
             try {
                 System.out.println("[" + message.getSender() + "] is approaching me");
-                final TrainToIntersectionInfo info = (TrainToIntersectionInfo)message.getContentObject() ;
+                final TrainToIntersectionInfo info = (TrainToIntersectionInfo) message.getContentObject();
 
                 RailwayIntersection secondIntersection = (RailwayIntersection) Simulation.getScene().getObject(info.getPreviousIntersection());
 
@@ -52,10 +52,17 @@ public class ReceiveArrivalInfo extends CyclicBehaviour {
 
                 final float distance = positionStart.distance(positionEnd);
 
-                float arrivalTime = distance / info.getMaxSpeed();
-                LocalDateTime time = LocalDateTime.now();
+                float arrivalTime = 1;
+                long time = 1;
+                float i = 1;
+                for (; i >= 0; i -= 0.01) {
+                    arrivalTime = distance / (info.getMaxSpeed() * i);
+                    time = (long) (System.currentTimeMillis() + (arrivalTime * 1000));
+                    if (CheckForCollision(time))
+                        break;
+                }
                 scheduledTrains.add(new Pair<>(message.getSender().getName(), time));
-                IntersectionResponse responseObject = new IntersectionResponse(info.getMaxSpeed(),  arrivalTime);
+                IntersectionResponse responseObject = new IntersectionResponse(info.getMaxSpeed() * i, arrivalTime);
 
 
                 final ACLMessage response = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
@@ -69,4 +76,9 @@ public class ReceiveArrivalInfo extends CyclicBehaviour {
 
         }
     }
+
+    private boolean CheckForCollision(final long time) {
+        return scheduledTrains.stream().filter(train -> time - 1000 <= train.getValue1() || train.getValue1() >= time + 1000).collect(Collectors.toList()).isEmpty();
+    }
+
 }
