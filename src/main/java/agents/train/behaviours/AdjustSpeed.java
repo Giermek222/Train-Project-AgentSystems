@@ -46,7 +46,10 @@ public class AdjustSpeed extends CyclicBehaviour {
 
                 ACLMessage response =  new ACLMessage(ACLMessage.AGREE);
                 response.addReceiver(message.getSender());
-                response.setContent(segments.remove());
+                if (segments.isEmpty())
+                    response.setContent("Final station");
+                else
+                    response.setContent(segments.remove());
                 myAgent.send(response);
 
             } catch (UnreadableException e) {

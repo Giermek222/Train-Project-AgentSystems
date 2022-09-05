@@ -3,16 +3,16 @@ package model.messageparams;
 import java.io.Serializable;
 
 public class TrainToIntersectionInfo implements Serializable {
-    private String secondIntersection;
+    private String previousIntersection;
     private Float maxSpeed;
 
 
-    public String getSecondIntersection() {
-        return secondIntersection;
+    public String getPreviousIntersection() {
+        return previousIntersection;
     }
 
-    public void setSecondIntersection(String secondIntersection) {
-        this.secondIntersection = secondIntersection;
+    public void setPreviousIntersection(String previousIntersection) {
+        this.previousIntersection = previousIntersection;
     }
 
     public Float getMaxSpeed() {

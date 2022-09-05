@@ -45,7 +45,7 @@ public class ReceiveArrivalInfo extends CyclicBehaviour {
                 System.out.println("[" + message.getSender() + "] is approaching me");
                 final TrainToIntersectionInfo info = (TrainToIntersectionInfo)message.getContentObject() ;
 
-                RailwayIntersection secondIntersection = (RailwayIntersection) Simulation.getScene().getObject(info.getSecondIntersection());
+                RailwayIntersection secondIntersection = (RailwayIntersection) Simulation.getScene().getObject(info.getPreviousIntersection());
 
                 Vector2f positionStart = intersection.getPosition();
                 Vector2f positionEnd = secondIntersection.getPosition();

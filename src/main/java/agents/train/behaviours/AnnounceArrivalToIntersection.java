@@ -1,13 +1,13 @@
 package agents.train.behaviours;
 
-import agents.train.TrainAgent;
-import agents.train.helpers.SendMessageToIntersection;
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import model.RailwayIntersection;
 import model.RailwayTrain;
 import model.messageparams.TrainToIntersectionInfo;
+import simulation.Simulation;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -23,7 +23,6 @@ public class AnnounceArrivalToIntersection extends CyclicBehaviour {
    private final Queue<String> segmentrs;
    private final Float currentSpeed;
 
-   private final SendMessageToIntersection sendMessageToIntersection = new SendMessageToIntersection();
     public AnnounceArrivalToIntersection(RailwayTrain train, Queue<String> intersectionName, Queue<String> segmentName, float speed) {
         this.train = train;
         intersections = intersectionName;
@@ -44,7 +43,32 @@ public class AnnounceArrivalToIntersection extends CyclicBehaviour {
             train.setSpeed(0);
             myAgent.doWait(1000);
             train.setSpeed(current_speed);
-            sendMessageToIntersection.send((TrainAgent) myAgent, segmentrs, intersections, train);
+
+            myAgent.doWait(100);
+
+            if (message.getContent().equals("final station"))
+            {
+                train.setSpeed(0);
+            }
+            else
+            {
+                System.out.println("sending message to next intersection:" + intersections.peek());
+                final ACLMessage proposal = new ACLMessage(ACLMessage.INFORM);
+                TrainToIntersectionInfo messageContent = new TrainToIntersectionInfo();
+                messageContent.setMaxSpeed(train.getMaxSpeed());
+                messageContent.setPreviousIntersection(train.getPreviousIntersection().getName());
+
+                RailwayIntersection last = (RailwayIntersection) Simulation.getScene().getObject(intersections.peek());
+                train.setPreviousIntersection(last);
+                proposal.addReceiver(new AID(intersections.remove(), AID.ISLOCALNAME));
+
+                try {
+                    proposal.setContentObject(messageContent);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                myAgent.send(proposal);
+            }
         }
     }
 }

@@ -1,7 +1,5 @@
 package agents.train.behaviours;
 
-import agents.train.TrainAgent;
-import agents.train.helpers.SendMessageToIntersection;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -22,10 +20,6 @@ public class StartRide extends OneShotBehaviour {
     private final Queue<String> segmentrs;
     private final Float currentSpeed;
 
-
-    private final SendMessageToIntersection sendMessageToIntersection = new SendMessageToIntersection();
-
-
     private final RailwayTrain train;
 
     public StartRide(Queue<String> intersectionName, Queue<String> segmentName, float speed, RailwayTrain train) {
@@ -42,9 +36,24 @@ public class StartRide extends OneShotBehaviour {
     @Override
     public void action() {
         RailwayIntersection intersection = (RailwayIntersection) Simulation.getScene().getObject(intersections.remove());
-        train.setLastIntersection(intersection.getPosition());
+        train.setPreviousIntersection(intersection);
         intersection.setNextSegmentByName(segmentrs.remove());
-        train.setSpeed(train.getMaxSpeed());
-        sendMessageToIntersection.send((TrainAgent) myAgent, segmentrs, intersections, train);
+
+        System.out.println("sending message to next intersection:" + intersections.peek());
+            final ACLMessage proposal = new ACLMessage(ACLMessage.INFORM);
+
+
+            TrainToIntersectionInfo messageContent = new TrainToIntersectionInfo();
+            messageContent.setMaxSpeed(train.getMaxSpeed());
+            messageContent.setPreviousIntersection(train.getPreviousIntersection().getName());
+            train.setPreviousIntersection((RailwayIntersection) getScene().getObject(intersections.peek()));
+            proposal.addReceiver(new AID(intersections.remove(), AID.ISLOCALNAME));
+            try {
+                proposal.setContentObject(messageContent);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            myAgent.send(proposal);
+
     }
 }
