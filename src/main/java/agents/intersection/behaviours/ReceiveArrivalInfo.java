@@ -57,7 +57,7 @@ public class ReceiveArrivalInfo extends CyclicBehaviour {
                 float i = 1;
                 for (; i >= 0; i -= 0.01) {
                     arrivalTime = distance / (info.getMaxSpeed() * i);
-                    time = (long) (System.currentTimeMillis() + (arrivalTime * 1000));
+                    time = System.currentTimeMillis() + (long) (arrivalTime * 1000);
                     if (CheckForCollision(time))
                         break;
                 }
@@ -78,7 +78,7 @@ public class ReceiveArrivalInfo extends CyclicBehaviour {
     }
 
     private boolean CheckForCollision(final long time) {
-        return scheduledTrains.stream().filter(train -> time - 1000 <= train.getValue1() || train.getValue1() >= time + 1000).collect(Collectors.toList()).isEmpty();
+        return scheduledTrains.stream().filter(train -> time - 450 <= train.getValue1() || train.getValue1() >= time + 450).collect(Collectors.toList()).isEmpty();
     }
 
 }

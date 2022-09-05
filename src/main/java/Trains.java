@@ -17,7 +17,7 @@ public class Trains {
         try
         {
             ScenarioEngine scenarioEngine = new ScenarioEngine();
-            scenarioEngine.runScenario(1);
+            scenarioEngine.runScenario(2);
         }
         catch ( FileNotFoundException | StaleProxyException e)
         {
@@ -32,7 +32,7 @@ public class Trains {
         SimulationScene scene = Simulation.getScene ();
 
         final RailwayIntersection[] intersections = {
-                new RailwayIntersection ("intersection_1", new Vector2f (200, 200)),
+                new RailwayIntersection ("intersection_1", new Vector2f (200, 300)),
                 new RailwayIntersection ("intersection_2", new Vector2f (200, 100)),
                 new RailwayIntersection ("intersection_3", new Vector2f (600, 300)),
                 new RailwayIntersection ("intersection_4", new Vector2f (800, 100)),
@@ -58,7 +58,7 @@ public class Trains {
             Simulation.getScene ().addObject (intersection);
         }
 
-        RailwayTrain train = new RailwayTrain ("train_1", 100.0f, intersections[6]);
+        RailwayTrain train = new RailwayTrain ("train_1", 100.0f, intersections[2]);
         train.setSpeed (0.0f);
 
         RailwayTrain train2 = new RailwayTrain ("train_2", 100.0f, intersections[0]);
