@@ -39,22 +39,24 @@ public class HandleMalfunction extends CyclicBehaviour {
         {
             String brokenSegment = message.getContent();
 
-            Pair<String, String> parsedSegment = SegmentParser.parse(brokenSegment);
+            Pair<String, String> parsedSegment = SegmentParser.parseFullName(brokenSegment);
             Map<String, List<String>> tmpPlan = plan.getPlan();
             tmpPlan.get(parsedSegment.getValue0()).remove(parsedSegment.getValue1());
             plan.setPlan(tmpPlan);
 
             List<AID> affectedTrains = null;
             try {
-                affectedTrains = FindAffectedTrains(brokenSegment);
-            } catch (FIPAException e) {
+                affectedTrains = FindAffectedTrains(parsedSegment.getValue0() + "-" + parsedSegment.getValue1());
+            }
+            catch (FIPAException e)
+            {
                 throw new RuntimeException(e);
             }
 
             for (AID id : affectedTrains) {
                 ACLMessage newRouteProposal = new ACLMessage(PROPOSE);
                 newRouteProposal.addReceiver(id);
-                newRouteProposal.setContent(brokenSegment);
+                newRouteProposal.setContent(parsedSegment.getValue0() + "-" + parsedSegment.getValue1());
                 myAgent.send(newRouteProposal);
             }
 

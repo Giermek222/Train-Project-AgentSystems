@@ -39,11 +39,12 @@ public class TrainAgent extends Agent {
         final DFAgentDescription description = new DFAgentDescription();
         description.setName(getAID());
 
-        final ServiceDescription serviceDescription = new ServiceDescription();
-        serviceDescription.setType("Delivery");
-        serviceDescription.setName("e");
-        description.addServices(serviceDescription);
-
+        for (String segment : route_segments) {
+            final ServiceDescription serviceDescription = new ServiceDescription();
+            serviceDescription.setType("Passing");
+            serviceDescription.setName(segment);
+            description.addServices(serviceDescription);
+        }
         try {
             DFService.register(this, description);
         } catch (FIPAException e) {

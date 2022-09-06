@@ -40,7 +40,7 @@ public class AdjustSpeed extends CyclicBehaviour {
                 IntersectionResponse responseParams = (IntersectionResponse) message.getContentObject();
                 train.setSpeed(responseParams.speed);
                 long sleep_time = (long)(responseParams.time * 1000);
-                myAgent.doWait(sleep_time);
+                //myAgent.doWait(sleep_time);
 
 
                 ACLMessage response =  new ACLMessage(ACLMessage.AGREE);

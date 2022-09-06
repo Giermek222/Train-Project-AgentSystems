@@ -40,11 +40,11 @@ public class AnnounceArrivalToIntersection extends CyclicBehaviour {
 
         if (Objects.nonNull(message)) {
 
-            myAgent.doWait(100);
+            //myAgent.doWait(100);
 
             if (message.getContent().equals("final station"))
             {
-                myAgent.doWait(100);
+                //myAgent.doWait(100);
                 train.setSpeed(0);
             }
             else

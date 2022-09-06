@@ -5,7 +5,9 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.lang.acl.UnreadableException;
 import model.RailwayPlan;
+import model.messageparams.TrainRerouteParams;
 import org.javatuples.Pair;
 import util.SegmentParser;
 
@@ -35,15 +37,19 @@ public class SendNewRoute extends CyclicBehaviour {
 
         if (Objects.nonNull(message))
         {
-            String route = message.getContent();
+            try {
+                TrainRerouteParams trainParams = (TrainRerouteParams) message.getContentObject();
+                String newRoute = FindNewRoute(trainParams.getBeginning(), trainParams.getEnd(), plan.getPlan());
 
-            Pair<String, String> parsedSegment = SegmentParser.parse(route);
-            String newRoute = FindNewRoute(parsedSegment.getValue0(), parsedSegment.getValue1(), plan.getPlan());
+                ACLMessage routeProposal = new ACLMessage(PROPAGATE);
+                routeProposal.addReceiver(message.getSender());
+                routeProposal.setContent(newRoute);
+                myAgent.send(routeProposal);
+            } catch (UnreadableException e) {
+                throw new RuntimeException(e);
+            }
 
-            ACLMessage routeProposal = new ACLMessage(PROPAGATE);
-            routeProposal.addReceiver(message.getSender());
-            routeProposal.setContent(newRoute);
-            myAgent.send(routeProposal);
+
 
         }
     }
