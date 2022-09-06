@@ -2,10 +2,12 @@ import jade.wrapper.StaleProxyException;
 import model.RailwayIntersection;
 import model.RailwaySegment;
 import model.RailwayTrain;
+import org.javatuples.Pair;
 import org.joml.Vector2f;
 import simulation.Simulation;
 import simulation.SimulationScene;
 import util.ScenarioEngine;
+import util.SegmentParser;
 
 import java.io.FileNotFoundException;
 
@@ -43,14 +45,15 @@ public class Trains {
                 new RailwayIntersection ("intersection_9", new Vector2f (250, 600))
         };
 
-        final int[] segments = { 12, 23, 34, 16, 36, 37, 48, 51, 56, 67, 78, 79, 83, 95 };
+        final String[] segments = { "1-2", "2-3", "3-4", "1-6", "3-6", "3-7", "4-8", "5-1", "5-6", "6-7", "7-8", "7-9", "8-3", "9-5" };
 
-        for (int segment : segments) {
-            int from = segment / 10, to = segment % 10;
+        for (String segment : segments) {
+            Pair<String, String> parsed = SegmentParser.parse(segment);
+            String from = parsed.getValue0(), to = parsed.getValue1();
             Simulation.getScene ().addObject (new RailwaySegment (
-                    String.format("segment_%d-%d", from, to),
-                    intersections[from - 1],
-                    intersections[to - 1]
+                    String.format("segment_%s", segment),
+                    intersections[ Integer.parseInt(from) - 1],
+                    intersections[Integer.parseInt(to) - 1]
             ));
         }
 

@@ -23,7 +23,7 @@ public class SegmentAgent extends Agent {
 
         firstIntersection = params[1].toString();
         secondIntersection = params[2].toString();
-        RailwaySegment segment = (RailwaySegment) Simulation.getScene().getObject("segment_" + name.charAt(0) + "-" + name.charAt(1));
+        RailwaySegment segment = (RailwaySegment) Simulation.getScene().getObject("segment_" + name);
         addBehaviour(CheckHealth.create(this, 1000, segment));
     }
 }

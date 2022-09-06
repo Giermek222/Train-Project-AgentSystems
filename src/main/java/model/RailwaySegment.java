@@ -65,7 +65,7 @@ public class RailwaySegment extends RailwayFragment implements IRenderableObject
         m_startIntersection.addOutboundSegment (this);
         m_endIntersection.addInboundSegment (this);
 
-        broken = true;
+        broken = false;
     }
 
     @Override

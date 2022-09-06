@@ -1,5 +1,8 @@
 package model;
 
+import org.javatuples.Pair;
+import util.SegmentParser;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,10 +13,10 @@ public class RailwayPlan {
 
     public RailwayPlan(List<String> segments) {
         for (String s : segments) {
-            String[] segment = s.split("-");
-            if (!map.containsKey(segment[0]))
-                map.put(segment[0], new ArrayList<>() {});
-            map.get(segment[0]).add(segment[1]);
+            Pair<String, String> parsed = SegmentParser.parse(s);
+            if (!map.containsKey(parsed.getValue0()))
+                map.put(parsed.getValue0(), new ArrayList<>() {});
+            map.get(parsed.getValue0()).add(parsed.getValue1());
         }
 
     }
