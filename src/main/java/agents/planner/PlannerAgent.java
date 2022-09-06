@@ -24,7 +24,7 @@ public class PlannerAgent extends Agent {
         }
 
         RailwayPlan plan = new RailwayPlan(segments);
-        addBehaviour(HandleMalfunction.create());
+        addBehaviour(HandleMalfunction.create(plan));
 
     }
 }

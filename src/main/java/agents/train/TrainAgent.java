@@ -4,6 +4,10 @@ import agents.train.behaviours.AdjustSpeed;
 import agents.train.behaviours.AnnounceArrivalToIntersection;
 import agents.train.behaviours.StartRide;
 import jade.core.Agent;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 import model.RailwayTrain;
 import simulation.Simulation;
 
@@ -32,6 +36,19 @@ public class TrainAgent extends Agent {
                 route_segments.add(params[i].toString());
         }
 
+        final DFAgentDescription description = new DFAgentDescription();
+        description.setName(getAID());
+
+        final ServiceDescription serviceDescription = new ServiceDescription();
+        serviceDescription.setType("Delivery");
+        serviceDescription.setName("e");
+        description.addServices(serviceDescription);
+
+        try {
+            DFService.register(this, description);
+        } catch (FIPAException e) {
+            throw new RuntimeException(e);
+        }
 
         addBehaviour(AnnounceArrivalToIntersection.create(train, route_intersections, route_segments, train.getSpeed()));
         addBehaviour(AdjustSpeed.create(train, route_segments));
