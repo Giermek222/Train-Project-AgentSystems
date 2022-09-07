@@ -29,7 +29,9 @@ public class CheckHealth extends TickerBehaviour {
             ACLMessage message = new ACLMessage(INFORM);
             message.addReceiver(new AID("planner", AID.ISLOCALNAME));
             message.setContent(segment.getName());
+
             myAgent.send(message);
+            myAgent.removeBehaviour(this);
         }
     }
 }

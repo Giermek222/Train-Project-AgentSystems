@@ -4,8 +4,11 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
+import model.RailwayIntersection;
 import model.RailwayTrain;
 import model.messageparams.IntersectionResponse;
+import simulation.Simulation;
+import util.SegmentParser;
 
 import java.util.Objects;
 import java.util.Queue;
@@ -40,8 +43,13 @@ public class AdjustSpeed extends CyclicBehaviour {
                 IntersectionResponse responseParams = (IntersectionResponse) message.getContentObject();
                 train.setSpeed(responseParams.speed);
                 long sleep_time = (long)(responseParams.time * 1000);
-                myAgent.doWait(sleep_time);
 
+                while (!train.isTraversingSegment()) {
+                    System.out.println(train.getLocation());
+                }
+                while (train.isTraversingSegment()) {
+                    System.out.println(train.getLocation());
+                }
 
                 ACLMessage response =  new ACLMessage(ACLMessage.AGREE);
                 response.addReceiver(message.getSender());

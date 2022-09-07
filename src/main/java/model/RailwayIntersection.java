@@ -23,7 +23,7 @@ public class RailwayIntersection extends RailwayFragment implements IPositionedO
 
     @Override
     public float getLength () {
-        return 10.0f;
+        return 50.0f;
     }
 
     void addOutboundSegment (RailwaySegment segment) {

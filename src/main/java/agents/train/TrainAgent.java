@@ -1,5 +1,6 @@
 package agents.train;
 
+import agents.train.behaviours.AcknowledgeReroute;
 import agents.train.behaviours.AdjustSpeed;
 import agents.train.behaviours.AnnounceArrivalToIntersection;
 import agents.train.behaviours.StartRide;
@@ -39,11 +40,12 @@ public class TrainAgent extends Agent {
         final DFAgentDescription description = new DFAgentDescription();
         description.setName(getAID());
 
-        final ServiceDescription serviceDescription = new ServiceDescription();
-        serviceDescription.setType("Delivery");
-        serviceDescription.setName("e");
-        description.addServices(serviceDescription);
-
+        for (String segment : route_segments) {
+            final ServiceDescription serviceDescription = new ServiceDescription();
+            serviceDescription.setType("Passing");
+            serviceDescription.setName(segment);
+            description.addServices(serviceDescription);
+        }
         try {
             DFService.register(this, description);
         } catch (FIPAException e) {
@@ -53,6 +55,7 @@ public class TrainAgent extends Agent {
         addBehaviour(AnnounceArrivalToIntersection.create(train, route_intersections, route_segments, train.getSpeed()));
         addBehaviour(AdjustSpeed.create(train, route_segments));
         addBehaviour(StartRide.create(train, route_intersections, route_segments, train.getSpeed()));
+        addBehaviour(AcknowledgeReroute.create(train, route_segments, route_intersections));
 
 
 
