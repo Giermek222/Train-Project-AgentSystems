@@ -28,7 +28,7 @@ public class RailwayTrain extends SimulationObject implements IRenderableObject 
         m_railwayFragment = fragment;
     }
 
-    RailwayFragment getRailwayFragment () {
+    public RailwayFragment getRailwayFragment () {
         return m_railwayFragment;
     }
 
@@ -52,6 +52,10 @@ public class RailwayTrain extends SimulationObject implements IRenderableObject 
 
     public void setPreviousIntersection(RailwayIntersection previousIntersection) {
         this.previousIntersection = previousIntersection;
+    }
+
+    public boolean isTraversingSegment() {
+        return m_railwayFragment.getName().contains("segment");
     }
 
     public RailwayTrain (String name, float maxSpeed, RailwayFragment fragment) {

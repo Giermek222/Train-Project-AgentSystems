@@ -43,16 +43,17 @@ public class AcknowledgeReroute extends CyclicBehaviour {
         if (Objects.nonNull(message))
         {
             final String brokenIntersection = message.getContent();
+            train.setSpeed(0);
 
             if (segments.contains(brokenIntersection))
             {
                 final float currentSpeed = train.getSpeed();
-                final String beginning = intersections.remove();
+
                 String end = null;
                 while (!intersections.isEmpty()) {
                     end = intersections.remove();
                 }
-                TrainRerouteParams responseParams = new TrainRerouteParams(currentSpeed, train.getMaxSpeed(), beginning, end);
+                TrainRerouteParams responseParams = new TrainRerouteParams(currentSpeed, train.getMaxSpeed(), train.getRailwayFragment().getName(), end);
                 ACLMessage response = new ACLMessage(CONFIRM);
 
                 try {
