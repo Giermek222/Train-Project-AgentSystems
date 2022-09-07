@@ -45,8 +45,7 @@ public class AcknowledgeReroute extends CyclicBehaviour {
             final String brokenIntersection = message.getContent();
             train.setSpeed(0);
 
-            if (segments.contains(brokenIntersection))
-            {
+
                 final float currentSpeed = train.getSpeed();
 
                 String end = null;
@@ -65,6 +64,5 @@ public class AcknowledgeReroute extends CyclicBehaviour {
                 myAgent.send(response);
 
             }
-        }
     }
 }

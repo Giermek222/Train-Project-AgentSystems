@@ -1,6 +1,7 @@
 package agents.planner;
 
 import agents.planner.behaviours.HandleMalfunction;
+import agents.planner.behaviours.SendNewRoute;
 import jade.core.Agent;
 import model.RailwayPlan;
 
@@ -25,6 +26,7 @@ public class PlannerAgent extends Agent {
 
         RailwayPlan plan = new RailwayPlan(segments);
         addBehaviour(HandleMalfunction.create(plan));
+        addBehaviour(SendNewRoute.create(plan));
 
     }
 }
