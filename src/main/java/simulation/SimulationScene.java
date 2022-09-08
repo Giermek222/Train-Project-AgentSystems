@@ -1,5 +1,6 @@
 package simulation;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -8,6 +9,10 @@ public class SimulationScene {
 
     SimulationScene () {
         m_objects = new LinkedHashMap<>();
+    }
+
+    Collection<SimulationObject> getAllObjects () {
+        return m_objects.values ();
     }
 
     public void addObject (SimulationObject object) {

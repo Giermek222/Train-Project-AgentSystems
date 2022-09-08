@@ -13,6 +13,7 @@ public class RailwayTrain extends SimulationObject implements IRenderableObject 
 
     private final float m_maxSpeed;
     private float m_speed;
+    private NVGColor m_color;
 
     // location data
     private RailwayFragment m_railwayFragment;
@@ -26,6 +27,14 @@ public class RailwayTrain extends SimulationObject implements IRenderableObject 
 
     void setRailwayFragment (RailwayFragment fragment) {
         m_railwayFragment = fragment;
+    }
+
+    public void setColor (int r, int g, int b) {
+        m_color = GraphicsContext.colorFromRgb (r, g, b);
+    }
+
+    public NVGColor getColor () {
+        return m_color;
     }
 
     public RailwayFragment getRailwayFragment () {
@@ -64,6 +73,7 @@ public class RailwayTrain extends SimulationObject implements IRenderableObject 
         m_maxSpeed = Math.abs (maxSpeed);
         m_railwayFragment = fragment;
         m_location = 0.0f;
+        m_color = RailwayTrain.COlOR;
 
         m_railwayFragment.enter (this);
     }
@@ -107,7 +117,7 @@ public class RailwayTrain extends SimulationObject implements IRenderableObject 
 
         nvgBeginPath (nvg);
         nvgCircle (nvg, pos.x, pos.y, 10.0f);
-        nvgFillColor (nvg, COlOR);
+        nvgFillColor (nvg, m_color);
         nvgFill (nvg);
         nvgClosePath (nvg);
 
