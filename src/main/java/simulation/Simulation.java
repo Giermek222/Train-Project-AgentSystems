@@ -1,6 +1,15 @@
 package simulation;
 
+import model.RailwayIntersection;
+import model.RailwaySegment;
+import org.joml.Vector2f;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFWKeyCallbackI;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.opengl.GL;
+
+import java.nio.DoubleBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33.GL_TRUE;
@@ -20,6 +29,54 @@ public class Simulation {
     private long m_window;
     private boolean m_initialized;
 
+    private void onMouseClick (long window, int button, int action, int mods) {
+        DoubleBuffer bufferPosX = BufferUtils.createDoubleBuffer (1);
+        DoubleBuffer bufferPosY = BufferUtils.createDoubleBuffer (1);
+
+        // get cursor pos
+        glfwGetCursorPos (window, bufferPosX, bufferPosY);
+
+        double mouseX = bufferPosX.get (0);
+        double mouseY = bufferPosY.get (0);
+
+        boolean isShiftClick = (mods & GLFW_MOD_SHIFT) == GLFW_MOD_SHIFT;
+        boolean isAltClick = (mods & GLFW_MOD_ALT) == GLFW_MOD_ALT;
+        boolean isCtrlClick = (mods & GLFW_MOD_CONTROL) == GLFW_MOD_CONTROL;
+
+        // lmb shift click deletes a segment
+        Vector2f p0 = new Vector2f ((float) mouseX, (float) mouseY);
+
+        if (button == GLFW_MOUSE_BUTTON_LEFT && (isShiftClick || isAltClick)) {
+            for (SimulationObject object : m_scene.getAllObjects ()) {
+                if (object instanceof RailwaySegment segment) {
+                    Vector2f p1 = segment.getStartIntersection ().getPosition ();
+                    Vector2f p2 = segment.getEndIntersection ().getPosition ();
+
+                    float numerator = Math.abs (((p2.x - p1.x) * (p1.y - p0.y)) - ((p2.y - p1.y) * (p1.x - p0.x)));
+                    float lengthSquared = ((p2.x - p1.x) * (p2.x - p1.x)) + ((p2.y - p1.y) * (p2.y - p1.y));
+                    float denominator = (float) Math.sqrt (lengthSquared);
+                    float distFromLine = numerator / denominator;
+
+                    if (distFromLine < 7) {
+                        if (isShiftClick) {
+                            System.out.printf ("break segment %s\n", segment.getName ());
+                            segment.setBroken (true);
+                        } else {
+                            System.out.printf ("repair segment %s\n", segment.getName ());
+                            segment.setBroken (false);
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    private void onKeyEvent (long window, int key, int scancode, int action, int mods) {
+        // todo: key handling
+    }
+
     public void initialize (int width, int height, String title) throws RuntimeException {
         if (m_initialized) {
             throw new RuntimeException ("simulation was already initialized");
@@ -37,6 +94,11 @@ public class Simulation {
         glfwWindowHint (GLFW_SAMPLES, 4);
 
         m_window = glfwCreateWindow (width, height, title, NULL, NULL);
+
+        // initialize input callbacks
+        glfwSetMouseButtonCallback (m_window, this::onMouseClick);
+        glfwSetKeyCallback (m_window, this::onKeyEvent);
+
         m_initialized = true;
     }
 

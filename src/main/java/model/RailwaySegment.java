@@ -8,7 +8,8 @@ import simulation.IRenderableObject;
 import static org.lwjgl.nanovg.NanoVG.*;
 
 public class RailwaySegment extends RailwayFragment implements IRenderableObject {
-    private final static NVGColor COlOR = GraphicsContext.colorFromRgb (255, 128, 0);
+    private final static NVGColor COlOR_WORKING = GraphicsContext.colorFromRgb (255, 128, 0);
+    private final static NVGColor COLOR_BROKEN = GraphicsContext.colorFromRgb (70, 70, 70);
 
     private final RailwayIntersection m_startIntersection;
     private final RailwayIntersection m_endIntersection;
@@ -80,7 +81,13 @@ public class RailwaySegment extends RailwayFragment implements IRenderableObject
         nvgBeginPath (nvg);
         nvgMoveTo (nvg, m_startPosition.x, m_startPosition.y);
         nvgLineTo (nvg, m_endPosition.x, m_endPosition.y);
-        nvgStrokeColor (nvg, COlOR);
+
+        if (broken) {
+            nvgStrokeColor (nvg, COLOR_BROKEN);
+        } else {
+            nvgStrokeColor (nvg, COlOR_WORKING);
+        }
+
         nvgStrokeWidth (nvg, 5.0f);
         nvgStroke (nvg);
         nvgClosePath (nvg);
