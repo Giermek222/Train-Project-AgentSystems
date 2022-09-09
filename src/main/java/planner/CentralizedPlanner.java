@@ -23,6 +23,7 @@ public abstract class CentralizedPlanner {
     }
 
     private final PlannerGraph m_graph = new PlannerGraph ();
+    private final Map<String, List<String>> m_trains = new HashMap<> ();
     private final Semaphore m_mutex = new Semaphore (1);
 
     public CentralizedPlanner (Map<String, List<RouteDescription>> graphDescription) {
@@ -51,11 +52,56 @@ public abstract class CentralizedPlanner {
     }
 
     public void notifyTrainArrived (String trainName) {
+        try {
+            m_mutex.acquire ();
+            List<String> route = m_trains.get (trainName);
+            if (route == null) {
+                return;
+            }
 
+            for (int i = 0; i < route.size () - 1; ++i) {
+                String first = route.get (i);
+                String second = route.get (i + 1);
+
+                PlannerGraph.PlannerGraphNode node = m_graph.getNode (first);
+                for (PlannerGraph.PlannerGraphEdge edge : node.getNeighbors ()) {
+                    if (edge.getNode ().getName ().equals (second)) {
+                        float load = Math.max (0.0f, edge.getLoad () - 100.0f);
+                        edge.setLoad (load);
+                    }
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace ();
+        } finally {
+            m_mutex.release ();
+        }
+
+        m_trains.remove (trainName);
     }
 
     public void acceptRoute (List<String> route, String trainName, float maxSpeed) {
+        try {
+            m_mutex.acquire ();
+            for (int i = 0; i < route.size () - 1; ++i) {
+                String first = route.get (i);
+                String second = route.get (i + 1);
 
+                PlannerGraph.PlannerGraphNode node = m_graph.getNode (first);
+                for (PlannerGraph.PlannerGraphEdge edge : node.getNeighbors ()) {
+                    if (edge.getNode ().getName ().equals (second)) {
+                        float load = edge.getLoad () + 100.0f;
+                        edge.setLoad (load);
+                    }
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace ();
+        } finally {
+            m_mutex.release ();
+        }
+
+        m_trains.put (trainName, route);
     }
 
     private float getDistance (PlannerGraph.PlannerGraphEdge edge, RoutePriority priority) {
