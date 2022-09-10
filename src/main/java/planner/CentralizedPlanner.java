@@ -5,7 +5,7 @@ import org.javatuples.Pair;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
-public abstract class CentralizedPlanner {
+public class CentralizedPlanner {
     public enum RoutePriority {
         DEFAULT, DISTANCE, COST, LOAD
     };
@@ -43,31 +43,49 @@ public abstract class CentralizedPlanner {
         }
     }
 
-    public void notifyRouteBroken (String routeName) {
+    private void setBroken (String from, String to, boolean broken) {
+        try {
+            m_mutex.acquire ();
+            PlannerGraph.PlannerGraphNode node = m_graph.getNode (from);
 
+            if (node != null) {
+                for (PlannerGraph.PlannerGraphEdge edge : node.getNeighbors ()) {
+                    if (edge.getNode ().getName ().equals (to)) {
+                        edge.setEnabled (!broken);
+                    }
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace ();
+        } finally {
+            m_mutex.release ();
+        }
     }
 
-    public void notifyRouteRepaired () {
+    public void notifyRouteBroken (String from, String to) {
+        setBroken (from, to, true);
+    }
 
+    public void notifyRouteRepaired (String from, String to) {
+        setBroken (from, to, false);
     }
 
     public void notifyTrainArrived (String trainName) {
         try {
             m_mutex.acquire ();
             List<String> route = m_trains.get (trainName);
-            if (route == null) {
-                return;
-            }
 
-            for (int i = 0; i < route.size () - 1; ++i) {
-                String first = route.get (i);
-                String second = route.get (i + 1);
+            if (route != null) {
+                for (int i = 0; i < route.size () - 1; ++i) {
+                    String first = route.get (i);
+                    String second = route.get (i + 1);
 
-                PlannerGraph.PlannerGraphNode node = m_graph.getNode (first);
-                for (PlannerGraph.PlannerGraphEdge edge : node.getNeighbors ()) {
-                    if (edge.getNode ().getName ().equals (second)) {
-                        float load = Math.max (0.0f, edge.getLoad () - 100.0f);
-                        edge.setLoad (load);
+                    PlannerGraph.PlannerGraphNode node = m_graph.getNode (first);
+                    for (PlannerGraph.PlannerGraphEdge edge : node.getNeighbors ()) {
+                        if (edge.getNode ().getName ().equals (second)) {
+                            float load = Math.max (0.0f, edge.getLoad () - 100.0f);
+                            edge.setLoad (load);
+                        }
                     }
                 }
             }
@@ -146,6 +164,10 @@ public abstract class CentralizedPlanner {
                 float uWeight = distance.get (currName);
 
                 for (PlannerGraph.PlannerGraphEdge edge : u.getNeighbors ()) {
+                    if (!edge.isEnabled ()) {
+                        continue; // edge is broken, ignore it
+                    }
+
                     PlannerGraph.PlannerGraphNode v = edge.getNode ();
                     float vWeight = distance.get (v.getName ());
                     float dist = getDistance (edge, priority);
