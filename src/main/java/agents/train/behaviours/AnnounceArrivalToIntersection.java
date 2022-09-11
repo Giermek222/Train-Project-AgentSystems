@@ -23,6 +23,8 @@ public class AnnounceArrivalToIntersection extends CyclicBehaviour {
    private final Queue<String> segmentrs;
    private final Float currentSpeed;
 
+
+
     public AnnounceArrivalToIntersection(RailwayTrain train, Queue<String> intersectionName, Queue<String> segmentName, float speed) {
         this.train = train;
         intersections = intersectionName;
@@ -38,7 +40,7 @@ public class AnnounceArrivalToIntersection extends CyclicBehaviour {
     public void action() {
         final ACLMessage message = myAgent.receive(messageTemplate);
 
-        if (Objects.nonNull(message)) {
+        if (Objects.nonNull(message) && train.isRoadStable()) {
 
             if (message.getContent().equals("final station"))
             {

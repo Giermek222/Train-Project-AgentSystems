@@ -8,11 +8,14 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import model.RailwayPlan;
 import org.javatuples.Pair;
+import planner.CentralizedPlanner;
 import util.SegmentParser;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 import static jade.lang.acl.ACLMessage.INFORM;
 import static jade.lang.acl.ACLMessage.PROPOSE;
@@ -21,13 +24,13 @@ public class HandleMalfunction extends CyclicBehaviour {
 
     private final MessageTemplate messageTemplate = MessageTemplate.MatchPerformative(INFORM);
 
-    private RailwayPlan plan;
+    private CentralizedPlanner plan;
 
-    public static HandleMalfunction create(RailwayPlan railwayPlan) {
+    public static HandleMalfunction create(CentralizedPlanner railwayPlan) {
         return new HandleMalfunction(railwayPlan);
     }
 
-    private HandleMalfunction(RailwayPlan railwayPlan) {
+    private HandleMalfunction(CentralizedPlanner railwayPlan) {
         plan = railwayPlan;
     }
 
@@ -40,9 +43,7 @@ public class HandleMalfunction extends CyclicBehaviour {
             String brokenSegment = message.getContent();
 
             Pair<String, String> parsedSegment = SegmentParser.parseFullName(brokenSegment);
-            Map<String, List<String>> tmpPlan = plan.getPlan();
-            tmpPlan.get(parsedSegment.getValue0()).remove(parsedSegment.getValue1());
-            plan.setPlan(tmpPlan);
+            plan.notifyRouteBroken("intersection_" + parsedSegment.getValue0(), "intersection_" + parsedSegment.getValue1());
 
             List<AID> affectedTrains = null;
             try {

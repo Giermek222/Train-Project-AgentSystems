@@ -1,23 +1,23 @@
 package model.messageparams;
 
+import planner.CentralizedPlanner;
+
 import java.io.Serializable;
 
 public class TrainRerouteParams implements Serializable {
-    private final float speed;
     private final float maxSpeed;
     private final String beginning;
     private final String end;
 
-    public TrainRerouteParams(float speed, float maxSpeed, String beginning, String end) {
-        this.speed = speed;
+    private final CentralizedPlanner.RoutePriority priority;
+
+    public TrainRerouteParams(float maxSpeed, String beginning, String end, CentralizedPlanner.RoutePriority priority) {
         this.maxSpeed = maxSpeed;
         this.beginning = beginning;
         this.end = end;
+        this.priority = priority;
     }
 
-    public float getSpeed() {
-        return speed;
-    }
 
     public float getMaxSpeed() {
         return maxSpeed;
@@ -29,5 +29,9 @@ public class TrainRerouteParams implements Serializable {
 
     public String getEnd() {
         return end;
+    }
+
+    public CentralizedPlanner.RoutePriority getPriority() {
+        return priority;
     }
 }

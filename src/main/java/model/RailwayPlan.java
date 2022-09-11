@@ -12,12 +12,7 @@ public class RailwayPlan {
     private Map<String, List<String> > plan = new HashMap<>();
 
     public RailwayPlan(List<String> segments) {
-        for (String s : segments) {
-            Pair<String, String> parsed = SegmentParser.parse(s);
-            if (!plan.containsKey(parsed.getValue0()))
-                plan.put(parsed.getValue0(), new ArrayList<>() {});
-            plan.get(parsed.getValue0()).add(parsed.getValue1());
-        }
+
 
     }
 

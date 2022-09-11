@@ -10,9 +10,11 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import model.RailwayPlan;
 import planner.CentralizedPlanner;
+import util.GraphDescriptor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PlannerAgent extends Agent {
     private List<String> segments = new ArrayList<>();
@@ -44,10 +46,11 @@ public class PlannerAgent extends Agent {
         } catch (FIPAException exception) {
             exception.printStackTrace ();
         }
-
-        RailwayPlan plan = new RailwayPlan(segments);
-        addBehaviour(HandleMalfunction.create(plan));
-        addBehaviour(SendNewRoute.create(plan));
+        Map<String, List<CentralizedPlanner.RouteDescription>> graphDescription = GraphDescriptor.describeRailway(segments);
+        CentralizedPlanner planner = new CentralizedPlanner(graphDescription);
+        List<String> route = planner.findRoute("intersection_1", "intersection_8", 100, CentralizedPlanner.RoutePriority.DEFAULT);
+        addBehaviour(HandleMalfunction.create(planner));
+        addBehaviour(SendNewRoute.create(planner));
     }
 
     @Override

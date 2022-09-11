@@ -200,7 +200,17 @@ public class CentralizedPlanner {
         } finally {
             m_mutex.release ();
         }
-
-        return route;
+        if (route != null)
+        {
+            route.add(from);
+            Collections.reverse(route);
+            return route;
+        }
+        else
+        {
+            List<String> routeNotFound = new ArrayList<>();
+            routeNotFound.add("Not_Found");
+            return  routeNotFound;
+        }
     }
 }
