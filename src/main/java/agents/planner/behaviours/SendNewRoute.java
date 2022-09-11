@@ -9,8 +9,11 @@ import jade.lang.acl.UnreadableException;
 import model.RailwayPlan;
 import model.messageparams.TrainRerouteParams;
 import org.javatuples.Pair;
+import planner.CentralizedPlanner;
 import util.SegmentParser;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -21,13 +24,13 @@ public class SendNewRoute extends CyclicBehaviour {
 
     private final MessageTemplate messageTemplate = MessageTemplate.MatchPerformative(CONFIRM);
 
-    private RailwayPlan plan;
+    private CentralizedPlanner plan;
 
-    public static SendNewRoute create(RailwayPlan railwayPlan) {
+    public static SendNewRoute create(CentralizedPlanner railwayPlan) {
         return new SendNewRoute(railwayPlan);
     }
 
-    private SendNewRoute(RailwayPlan railwayPlan) {
+    private SendNewRoute(CentralizedPlanner railwayPlan) {
         plan = railwayPlan;
     }
     @Override
@@ -39,22 +42,17 @@ public class SendNewRoute extends CyclicBehaviour {
         {
             try {
                 TrainRerouteParams trainParams = (TrainRerouteParams) message.getContentObject();
-                String newRoute = FindNewRoute(trainParams.getBeginning(), trainParams.getEnd(), plan.getPlan());
-
+                //TODO add different priorities per train
+                List<String> newRoute = plan.findRoute(trainParams.getBeginning(), trainParams.getEnd(), trainParams.getMaxSpeed(), trainParams.getPriority());
                 ACLMessage routeProposal = new ACLMessage(PROPAGATE);
                 routeProposal.addReceiver(message.getSender());
-                routeProposal.setContent(newRoute);
+                routeProposal.setContentObject((Serializable) newRoute);
                 myAgent.send(routeProposal);
-            } catch (UnreadableException e) {
+            } catch (UnreadableException | IOException e) {
                 throw new RuntimeException(e);
             }
 
 
-
         }
-    }
-
-    private String FindNewRoute(String beginning, String End, Map<String, List<String>> route) {
-        return "new route placeholder";
     }
 }

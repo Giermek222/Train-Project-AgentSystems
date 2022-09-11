@@ -15,6 +15,8 @@ public class RailwayTrain extends SimulationObject implements IRenderableObject 
     private float m_speed;
     private NVGColor m_color;
 
+    private  boolean isRoadStable = true;
+
     // location data
     private RailwayFragment m_railwayFragment;
     private float m_location;
@@ -53,6 +55,14 @@ public class RailwayTrain extends SimulationObject implements IRenderableObject 
 
     public void setSpeed (float speed) {
         m_speed = Math.min (Math.abs (speed), m_maxSpeed);
+    }
+
+    public boolean isRoadStable() {
+        return isRoadStable;
+    }
+
+    public void setRoadStable(boolean roadStable) {
+        isRoadStable = roadStable;
     }
 
     public RailwayIntersection getPreviousIntersection() {

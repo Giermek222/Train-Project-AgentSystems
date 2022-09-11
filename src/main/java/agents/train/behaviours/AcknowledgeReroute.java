@@ -1,14 +1,15 @@
 package agents.train.behaviours;
 
+import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import model.RailwayTrain;
 import model.messageparams.TrainRerouteParams;
-import org.javatuples.Pair;
-import util.SegmentParser;
+import planner.CentralizedPlanner;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 
@@ -23,11 +24,13 @@ public class AcknowledgeReroute extends CyclicBehaviour {
     private Queue<String> segments;
     private Queue<String> intersections;
 
+
     public AcknowledgeReroute(RailwayTrain train, Queue<String> segments, Queue<String> intersections) {
 
         this.train = train;
         this.segments = segments;
         this.intersections = intersections;
+
     }
 
     public static AcknowledgeReroute create( RailwayTrain train,  Queue<String> segments, Queue<String> intersections) {
@@ -44,15 +47,13 @@ public class AcknowledgeReroute extends CyclicBehaviour {
         {
             final String brokenIntersection = message.getContent();
             train.setSpeed(0);
-
-
-                final float currentSpeed = train.getSpeed();
+            train.setColor(255,0,0);
 
                 String end = null;
                 while (!intersections.isEmpty()) {
                     end = intersections.remove();
                 }
-                TrainRerouteParams responseParams = new TrainRerouteParams(currentSpeed, train.getMaxSpeed(), train.getRailwayFragment().getName(), end);
+                TrainRerouteParams responseParams = new TrainRerouteParams( train.getMaxSpeed(), train.getPreviousIntersection().getName(), end, CentralizedPlanner.RoutePriority.DEFAULT);
                 ACLMessage response = new ACLMessage(CONFIRM);
 
                 try {
@@ -62,7 +63,8 @@ public class AcknowledgeReroute extends CyclicBehaviour {
                 }
                 response.addReceiver(message.getSender());
                 myAgent.send(response);
+                train.setRoadStable(false);
 
-            }
+        }
     }
 }

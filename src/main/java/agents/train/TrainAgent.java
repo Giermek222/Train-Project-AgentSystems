@@ -1,9 +1,6 @@
 package agents.train;
 
-import agents.train.behaviours.AcknowledgeReroute;
-import agents.train.behaviours.AdjustSpeed;
-import agents.train.behaviours.AnnounceArrivalToIntersection;
-import agents.train.behaviours.StartRide;
+import agents.train.behaviours.*;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -52,10 +49,12 @@ public class TrainAgent extends Agent {
             throw new RuntimeException(e);
         }
 
+
         addBehaviour(AnnounceArrivalToIntersection.create(train, route_intersections, route_segments, train.getSpeed()));
         addBehaviour(AdjustSpeed.create(train, route_segments));
         addBehaviour(StartRide.create(train, route_intersections, route_segments, train.getSpeed()));
         addBehaviour(AcknowledgeReroute.create(train, route_segments, route_intersections));
+        addBehaviour(ApplyNewRoute.create(train, route_intersections, route_segments));
 
 
 

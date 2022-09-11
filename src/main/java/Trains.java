@@ -63,11 +63,11 @@ public class Trains {
 
         RailwayTrain train = new RailwayTrain ("train_1", 100.0f, intersections[2]);
         train.setSpeed (0.0f);
-        train.setColor (200, 70, 70);
+        train.setColor (0, 255, 0);
 
         RailwayTrain train2 = new RailwayTrain ("train_2", 100.0f, intersections[0]);
         train2.setSpeed (0.0f);
-        train2.setColor (70, 70, 200);
+        train2.setColor (0, 255, 0);
 
         Simulation.getScene ().addObject (train);
         Simulation.getScene ().addObject (train2);
