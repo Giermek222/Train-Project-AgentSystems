@@ -40,10 +40,14 @@ public class HandleMalfunction extends CyclicBehaviour {
 
         if (Objects.nonNull(message))
         {
-            String brokenSegment = message.getContent();
-
-            Pair<String, String> parsedSegment = SegmentParser.parseFullName(brokenSegment);
-            plan.notifyRouteBroken("intersection_" + parsedSegment.getValue0(), "intersection_" + parsedSegment.getValue1());
+            String[] information = message.getContent().split(";");
+            String affactedSegment = information[0];
+            String Status = information[1];
+            Pair<String, String> parsedSegment = SegmentParser.parseFullName(affactedSegment);
+            if (Status.contains("Broken"))
+                plan.notifyRouteBroken("intersection_" + parsedSegment.getValue0(), "intersection_" + parsedSegment.getValue1());
+            else
+                plan.notifyRouteRepaired("intersection_" + parsedSegment.getValue0(), "intersection_" + parsedSegment.getValue1());
 
             List<AID> affectedTrains = null;
             try {

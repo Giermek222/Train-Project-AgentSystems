@@ -48,7 +48,6 @@ public class PlannerAgent extends Agent {
         }
         Map<String, List<CentralizedPlanner.RouteDescription>> graphDescription = GraphDescriptor.describeRailway(segments);
         CentralizedPlanner planner = new CentralizedPlanner(graphDescription);
-        List<String> route = planner.findRoute("intersection_1", "intersection_8", 100, CentralizedPlanner.RoutePriority.DEFAULT);
         addBehaviour(HandleMalfunction.create(planner));
         addBehaviour(SendNewRoute.create(planner));
     }

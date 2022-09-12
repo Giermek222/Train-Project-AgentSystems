@@ -25,12 +25,12 @@ public class CheckHealth extends TickerBehaviour {
     protected void onTick() {
 
         if (segment.isBroken()) {
-            System.out.println(segment.getName() + "broke down");
+            System.out.println(segment.getName() + " broke down");
             ACLMessage message = new ACLMessage(INFORM);
             message.addReceiver(new AID("planner", AID.ISLOCALNAME));
-            message.setContent(segment.getName());
-
+            message.setContent(segment.getName() + "; got Broken");
             myAgent.send(message);
+            myAgent.addBehaviour(HandleRepair.create(myAgent, getPeriod(), segment));
             myAgent.removeBehaviour(this);
         }
     }
