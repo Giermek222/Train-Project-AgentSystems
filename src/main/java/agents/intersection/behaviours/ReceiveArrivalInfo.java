@@ -77,7 +77,7 @@ public class ReceiveArrivalInfo extends CyclicBehaviour {
     }
 
     private boolean CheckForCollision(final long time) {
-        return scheduledTrains.stream().filter(train -> time - 750 <= train.getValue1() || train.getValue1() >= time + 750).collect(Collectors.toList()).isEmpty();
+        return scheduledTrains.stream().filter(train -> time - 850 <= train.getValue1() || train.getValue1() >= time + 850).collect(Collectors.toList()).isEmpty();
     }
 
 }

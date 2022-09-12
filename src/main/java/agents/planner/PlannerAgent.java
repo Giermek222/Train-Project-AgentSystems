@@ -18,17 +18,21 @@ import java.util.Map;
 
 public class PlannerAgent extends Agent {
     private List<String> segments = new ArrayList<>();
+    private List<String> costs = new ArrayList<>();
 
     @Override
     protected void setup() {
         super.setup();
         final Object[] params = getArguments();
         if (params.length < 2) {
-            System.out.println("Usage [planner name ], [segments separated by comas]");
+            System.out.println("Usage [planner name ], [pairs of segments and costs separated by comas]");
             doDelete();
         }
         for (int i = 1; i < params.length; ++i) {
-            segments.add(params[i].toString());
+            if (i % 2 != 0)
+                segments.add(params[i].toString());
+            else
+                costs.add(params[i].toString());
         }
 
         // register self as planner
@@ -46,7 +50,7 @@ public class PlannerAgent extends Agent {
         } catch (FIPAException exception) {
             exception.printStackTrace ();
         }
-        Map<String, List<CentralizedPlanner.RouteDescription>> graphDescription = GraphDescriptor.describeRailway(segments);
+        Map<String, List<CentralizedPlanner.RouteDescription>> graphDescription = GraphDescriptor.describeRailway(segments, costs);
         CentralizedPlanner planner = new CentralizedPlanner(graphDescription);
         addBehaviour(HandleMalfunction.create(planner));
         addBehaviour(SendNewRoute.create(planner));
