@@ -17,6 +17,8 @@ public class TrainAgent extends Agent {
     private final Queue<String> route_intersections = new ArrayDeque<>();
     private final Queue<String> route_segments = new ArrayDeque<>();
 
+    private String finalDestination;
+
     @Override
     protected void setup() {
         super.setup();
@@ -28,8 +30,10 @@ public class TrainAgent extends Agent {
         String trainName = params[0].toString();
         train = (RailwayTrain) Simulation.getScene().getObject(trainName);
         for (int i = 1; i < params.length; ++i) {
-            if (i % 2 != 0)
+            if (i % 2 != 0) {
                 route_intersections.add(params[i].toString());
+                finalDestination = params[i].toString();
+            }
             else
                 route_segments.add(params[i].toString());
         }
@@ -53,7 +57,7 @@ public class TrainAgent extends Agent {
         addBehaviour(AnnounceArrivalToIntersection.create(train, route_intersections, route_segments, train.getSpeed()));
         addBehaviour(AdjustSpeed.create(train, route_segments));
         addBehaviour(StartRide.create(train, route_intersections, route_segments, train.getSpeed()));
-        addBehaviour(AcknowledgeReroute.create(train, route_segments, route_intersections));
+        addBehaviour(AcknowledgeReroute.create(train, route_segments, route_intersections, finalDestination));
         addBehaviour(ApplyNewRoute.create(train, route_intersections, route_segments));
 
 

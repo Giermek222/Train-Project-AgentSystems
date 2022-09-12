@@ -24,17 +24,20 @@ public class AcknowledgeReroute extends CyclicBehaviour {
     private Queue<String> segments;
     private Queue<String> intersections;
 
+    private String destination;
 
-    public AcknowledgeReroute(RailwayTrain train, Queue<String> segments, Queue<String> intersections) {
+
+    public AcknowledgeReroute(RailwayTrain train, Queue<String> segments, Queue<String> intersections, String destination) {
 
         this.train = train;
         this.segments = segments;
         this.intersections = intersections;
+        this.destination = destination;
 
     }
 
-    public static AcknowledgeReroute create( RailwayTrain train,  Queue<String> segments, Queue<String> intersections) {
-        return new AcknowledgeReroute(train, segments, intersections);
+    public static AcknowledgeReroute create( RailwayTrain train,  Queue<String> segments, Queue<String> intersections, String destination) {
+        return new AcknowledgeReroute(train, segments, intersections, destination);
     }
 
 
@@ -49,11 +52,8 @@ public class AcknowledgeReroute extends CyclicBehaviour {
             train.setSpeed(0);
             train.setColor(255,0,0);
 
-                String end = null;
-                while (!intersections.isEmpty()) {
-                    end = intersections.remove();
-                }
-                TrainRerouteParams responseParams = new TrainRerouteParams( train.getMaxSpeed(), train.getPreviousIntersection().getName(), end, CentralizedPlanner.RoutePriority.DEFAULT);
+
+                TrainRerouteParams responseParams = new TrainRerouteParams( train.getMaxSpeed(), train.getPreviousIntersection().getName(), destination, CentralizedPlanner.RoutePriority.DEFAULT);
                 ACLMessage response = new ACLMessage(CONFIRM);
 
                 try {
