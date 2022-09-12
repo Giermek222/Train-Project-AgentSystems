@@ -5,8 +5,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import model.RailwayTrain;
 import model.messageparams.TrainRerouteParams;
-import org.javatuples.Pair;
-import util.SegmentParser;
+import planner.CentralizedPlanner;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -23,15 +22,18 @@ public class AcknowledgeReroute extends CyclicBehaviour {
     private Queue<String> segments;
     private Queue<String> intersections;
 
-    public AcknowledgeReroute(RailwayTrain train, Queue<String> segments, Queue<String> intersections) {
+    private  final CentralizedPlanner.RoutePriority priority;
+
+    public AcknowledgeReroute(RailwayTrain train, Queue<String> segments, Queue<String> intersections, CentralizedPlanner.RoutePriority priority) {
 
         this.train = train;
         this.segments = segments;
         this.intersections = intersections;
+        this.priority = priority;
     }
 
-    public static AcknowledgeReroute create( RailwayTrain train,  Queue<String> segments, Queue<String> intersections) {
-        return new AcknowledgeReroute(train, segments, intersections);
+    public static AcknowledgeReroute create(RailwayTrain train, Queue<String> segments, Queue<String> intersections, CentralizedPlanner.RoutePriority priority) {
+        return new AcknowledgeReroute(train, segments, intersections, priority);
     }
 
 
