@@ -8,7 +8,7 @@ import java.util.concurrent.Semaphore;
 public class CentralizedPlanner {
     public enum RoutePriority {
         DEFAULT, DISTANCE, COST, LOAD
-    };
+    }
 
     public static class RouteDescription {
         public String endIntersectionName;

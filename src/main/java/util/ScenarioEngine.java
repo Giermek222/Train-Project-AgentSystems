@@ -48,7 +48,7 @@ public class ScenarioEngine {
 
         }
         sc.close();
-        containerController.createNewAgent("Gui Guy", "jade.tools.rma.rma", null).start();
+        //containerController.createNewAgent("Gui Guy", "jade.tools.rma.rma", null).start();
 
     }
 

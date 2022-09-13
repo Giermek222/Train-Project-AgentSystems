@@ -13,7 +13,7 @@ public class Trains {
         try
         {
             ScenarioEngine scenarioEngine = new ScenarioEngine();
-            scenarioEngine.runScenario(4);
+            scenarioEngine.runScenario(3);
         }
         catch ( FileNotFoundException | StaleProxyException e)
         {

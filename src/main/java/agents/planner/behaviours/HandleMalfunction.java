@@ -17,6 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static agents.AgentConstants.INTERSECTION_PREFIX;
+import static agents.AgentConstants.TRAIN_DESCRIPTION;
 import static jade.lang.acl.ACLMessage.INFORM;
 import static jade.lang.acl.ACLMessage.PROPOSE;
 
@@ -42,16 +44,16 @@ public class HandleMalfunction extends CyclicBehaviour {
         {
             String[] information = message.getContent().split(";");
             String affactedSegment = information[0];
-            String Status = information[1];
+            String status = information[1];
             Pair<String, String> parsedSegment = SegmentParser.parseFullName(affactedSegment);
-            if (Status.contains("Broken"))
-                plan.notifyRouteBroken("intersection_" + parsedSegment.getValue0(), "intersection_" + parsedSegment.getValue1());
+            if (status.contains("Broken"))
+                plan.notifyRouteBroken(INTERSECTION_PREFIX + parsedSegment.getValue0(), INTERSECTION_PREFIX + parsedSegment.getValue1());
             else
-                plan.notifyRouteRepaired("intersection_" + parsedSegment.getValue0(), "intersection_" + parsedSegment.getValue1());
+                plan.notifyRouteRepaired(INTERSECTION_PREFIX + parsedSegment.getValue0(), INTERSECTION_PREFIX + parsedSegment.getValue1());
 
             List<AID> affectedTrains = null;
             try {
-                affectedTrains = FindAffectedTrains(parsedSegment.getValue0() + "-" + parsedSegment.getValue1());
+                affectedTrains = findAffectedTrains(parsedSegment.getValue0() + "-" + parsedSegment.getValue1());
             }
             catch (FIPAException e)
             {
@@ -68,12 +70,12 @@ public class HandleMalfunction extends CyclicBehaviour {
         }
     }
 
-    private List<AID> FindAffectedTrains(String broken_segment) throws FIPAException {
+    private List<AID> findAffectedTrains(String brokenSegment) throws FIPAException {
         final List<AID> affectedTrains = new ArrayList<>();
         final DFAgentDescription template = new DFAgentDescription();
         final ServiceDescription description = new ServiceDescription();
-        description.setType("Passing");
-        description.setName(broken_segment);
+        description.setType(TRAIN_DESCRIPTION);
+        description.setName(brokenSegment);
         template.addServices(description);
         final  DFAgentDescription[] agents = DFService.search(myAgent, template);
         Arrays.stream(agents).forEach(train -> affectedTrains.add(train.getName()));

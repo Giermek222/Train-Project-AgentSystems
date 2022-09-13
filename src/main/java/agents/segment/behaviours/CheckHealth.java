@@ -1,12 +1,9 @@
 package agents.segment.behaviours;
 
-import agents.intersection.behaviours.ReceiveArrivalInfo;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
-import model.RailwayIntersection;
 import model.RailwaySegment;
 
 import static jade.lang.acl.ACLMessage.INFORM;

@@ -13,18 +13,18 @@ import java.util.Set;
 import static org.lwjgl.nanovg.NanoVG.*;
 
 public class RailwayIntersection extends RailwayFragment implements IPositionedObject, IRenderableObject {
-    private final static NVGColor COlOR = GraphicsContext.colorFromRgb (255, 0, 0);
+
+    @Override
+    public float getLength () {
+        return 50.0f;
+    }
+    private static final NVGColor COlOR = GraphicsContext.colorFromRgb (255, 0, 0);
 
     private final Set<RailwaySegment> m_outbound;
     private final Set<RailwaySegment> m_inbound;
 
     private RailwaySegment m_nextSegment;
     private Vector2f m_position;
-
-    @Override
-    public float getLength () {
-        return 50.0f;
-    }
 
     void addOutboundSegment (RailwaySegment segment) {
         m_outbound.add (segment);

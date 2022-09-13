@@ -51,7 +51,7 @@ public class GraphicsContext {
 
         int font = nvgCreateFontMem (m_nvg, name, fontBuffer, 0);
         if (font == -1) {
-            throw new RuntimeException (String.format ("failed to add font %s\n", name));
+            throw new RuntimeException (String.format ("failed to add font %s%n", name));
         }
     }
 

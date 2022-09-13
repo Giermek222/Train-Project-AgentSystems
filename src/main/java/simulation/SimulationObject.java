@@ -7,7 +7,7 @@ public abstract class SimulationObject {
         return m_name;
     }
 
-    public SimulationObject (String name) {
+    protected SimulationObject (String name) {
         m_name = name;
     }
 

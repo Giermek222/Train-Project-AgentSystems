@@ -5,18 +5,16 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 import model.RailwayIntersection;
-import model.messageparams.IntersectionResponse;
 import model.messageparams.TrainToIntersectionInfo;
 import org.javatuples.Pair;
 import org.joml.Vector2f;
 import simulation.Simulation;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
+import static agents.AgentConstants.TRAIN_WINDOW;
 import static jade.lang.acl.ACLMessage.INFORM;
 
 public class ReceiveArrivalInfo extends CyclicBehaviour {
@@ -52,32 +50,29 @@ public class ReceiveArrivalInfo extends CyclicBehaviour {
 
                 final float distance = positionStart.distance(positionEnd);
 
-                float arrivalTime = 1;
+                float arrivalTime;
                 long time = 1;
                 float i = 1;
-                for (; i >= 0; i -= 0.01) {
+                for (; i != 0; i *= 0.99) {
                     arrivalTime = distance / (info.getMaxSpeed() * i);
                     time = System.currentTimeMillis() + (long) (arrivalTime * 1000);
-                    if (CheckForCollision(time))
+                    if (checkForCollision(time))
                         break;
                 }
                 scheduledTrains.add(new Pair<>(message.getSender().getName(), time));
-                IntersectionResponse responseObject = new IntersectionResponse(info.getMaxSpeed() * i, arrivalTime);
-
-
                 final ACLMessage response = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
                 response.addReceiver(message.getSender());
-                response.setContentObject(responseObject);
+                response.setContent(Float.toString(info.getMaxSpeed() * i));
                 myAgent.send(response);
 
-            } catch (IOException | UnreadableException e) {
+            } catch (UnreadableException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    private boolean CheckForCollision(final long time) {
-        return scheduledTrains.stream().filter(train -> time - 850 <= train.getValue1() || train.getValue1() >= time + 850).collect(Collectors.toList()).isEmpty();
+    private boolean checkForCollision(final long time) {
+        return scheduledTrains.stream().filter(train -> time - TRAIN_WINDOW <= train.getValue1() || train.getValue1() >= time + TRAIN_WINDOW).toList().isEmpty();
     }
 
 }
