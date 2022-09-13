@@ -25,3 +25,5 @@ hs_err_pid*
 *.txt
 target/
 out/
+
+*.idea/sonarlint/*
