@@ -14,6 +14,7 @@ import java.util.Objects;
 
 import static agents.AgentConstants.FINAL_STATION;
 import static jade.lang.acl.ACLMessage.CONFIRM;
+import static jade.lang.acl.ACLMessage.INFORM_IF;
 
 public class AnnounceArrivalToIntersection extends CyclicBehaviour {
     private final RailwayTrain train;
@@ -37,6 +38,10 @@ public class AnnounceArrivalToIntersection extends CyclicBehaviour {
             {
                 train.setSpeed(0);
                 train.setColor(255,0,0);
+                ACLMessage disqualifyRoute = new ACLMessage(INFORM_IF);
+                disqualifyRoute.addReceiver(new AID("planner", AID.ISLOCALNAME));
+                disqualifyRoute.setContent(train.getName());
+                myAgent.send(disqualifyRoute);
                 myAgent.doDelete();
             }
             else

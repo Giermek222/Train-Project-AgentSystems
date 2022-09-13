@@ -1,7 +1,9 @@
 package agents.planner;
 
 import agents.AgentConstants;
+import agents.planner.behaviours.AcceptTrainRoute;
 import agents.planner.behaviours.HandleMalfunction;
+import agents.planner.behaviours.HandleTrainArrival;
 import agents.planner.behaviours.SendNewRoute;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -53,6 +55,8 @@ public class PlannerAgent extends Agent {
         CentralizedPlanner planner = new CentralizedPlanner(graphDescription);
         addBehaviour(HandleMalfunction.create(planner));
         addBehaviour(SendNewRoute.create(planner));
+        addBehaviour(AcceptTrainRoute.create(planner));
+        addBehaviour(HandleTrainArrival.create(planner));
     }
 
     @Override
