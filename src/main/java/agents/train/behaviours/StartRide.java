@@ -35,19 +35,20 @@ public class StartRide extends OneShotBehaviour {
 
     @Override
     public void action() {
-        RailwayIntersection intersection = (RailwayIntersection) Simulation.getScene().getObject(intersections.remove());
+        train.setRoadStable(true);
+        RailwayIntersection intersection = (RailwayIntersection) Simulation.getScene().getObject(train.intersections.remove());
         train.setPreviousIntersection(intersection);
-        intersection.setNextSegmentByName(segmentrs.remove());
+        intersection.setNextSegmentByName(train.segments.remove());
 
-        System.out.println("sending message to next intersection:" + intersections.peek());
+        System.out.println("sending message to next intersection:" + train.intersections.peek());
             final ACLMessage proposal = new ACLMessage(ACLMessage.INFORM);
 
 
             TrainToIntersectionInfo messageContent = new TrainToIntersectionInfo();
             messageContent.setMaxSpeed(train.getMaxSpeed());
             messageContent.setPreviousIntersection(train.getPreviousIntersection().getName());
-            train.setPreviousIntersection((RailwayIntersection) getScene().getObject(intersections.peek()));
-            proposal.addReceiver(new AID(intersections.remove(), AID.ISLOCALNAME));
+            train.setPreviousIntersection((RailwayIntersection) getScene().getObject(train.intersections.peek()));
+            proposal.addReceiver(new AID(train.intersections.remove(), AID.ISLOCALNAME));
             try {
                 proposal.setContentObject(messageContent);
             } catch (IOException e) {

@@ -30,6 +30,7 @@ public class GraphDescriptor {
                     segment.getLength()
             );
             plan.get("intersection_" + parsed.getValue0()).add(description);
+            counter++;
         }
         return plan;
     }

@@ -44,17 +44,17 @@ public class TrainAgent extends Agent {
 
         for (int i = 2; i < params.length; ++i) {
             if (i % 2 == 0) {
-                route_intersections.add(params[i].toString());
+                train.intersections.add(params[i].toString());
                 finalDestination = params[i].toString();
             }
             else
-                route_segments.add(params[i].toString());
+                train.segments.add(params[i].toString());
         }
 
         final DFAgentDescription description = new DFAgentDescription();
         description.setName(getAID());
 
-        for (String segment : route_segments) {
+        for (String segment : train.segments) {
             final ServiceDescription serviceDescription = new ServiceDescription();
             serviceDescription.setType("Passing");
             serviceDescription.setName(segment);

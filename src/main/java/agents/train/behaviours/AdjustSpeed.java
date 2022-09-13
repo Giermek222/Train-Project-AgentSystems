@@ -45,18 +45,18 @@ public class AdjustSpeed extends CyclicBehaviour {
                 long sleep_time = (long)(responseParams.time * 1000);
 
                 while (!train.isTraversingSegment()) {
-                    System.out.println(train.getLocation());
+                    System.out.print("");
                 }
                 while (train.isTraversingSegment()) {
-                    System.out.println(train.getLocation());
+                    System.out.print("");
                 }
 
                 ACLMessage response =  new ACLMessage(ACLMessage.AGREE);
                 response.addReceiver(message.getSender());
-                if (segments.isEmpty())
+                if (train.segments.isEmpty())
                     response.setContent("Final station");
                 else
-                    response.setContent(segments.remove());
+                    response.setContent(train.segments.remove());
                 myAgent.send(response);
 
             } catch (UnreadableException e) {
