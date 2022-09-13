@@ -85,7 +85,6 @@ public class PlannerGraph {
         if (m_graph.containsKey (name)) {
             return m_graph.get (name);
         }
-
         return null;
     }
 

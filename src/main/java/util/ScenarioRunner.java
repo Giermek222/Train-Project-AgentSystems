@@ -121,21 +121,21 @@ public class ScenarioRunner {
         SimulationScene scene = Simulation.getScene ();
 
         final RailwayIntersection[] intersections = {
-                new RailwayIntersection ("intersection_1", new Vector2f(100, 400)),
-                new RailwayIntersection ("intersection_2", new Vector2f (300, 400)),
+                new RailwayIntersection ("intersection_1", new Vector2f(100, 360)),
+                new RailwayIntersection ("intersection_2", new Vector2f (300, 380)),
                 new RailwayIntersection ("intersection_3", new Vector2f (500, 400)),
                 new RailwayIntersection ("intersection_4", new Vector2f (600, 200)),
-                new RailwayIntersection ("intersection_5", new Vector2f (600, 600)),
+                new RailwayIntersection ("intersection_5", new Vector2f (500, 600)),
                 new RailwayIntersection ("intersection_6", new Vector2f (700, 600)),
                 new RailwayIntersection ("intersection_7", new Vector2f (700, 400)),
-                new RailwayIntersection ("intersection_8", new Vector2f (900, 400)),
+                new RailwayIntersection ("intersection_8", new Vector2f (900, 420)),
 
 
         };
 
 
 
-        final String[] segments = { "2-1", "1-2", "3-2", "2-3", "3-4", "4-3", "4-7", "7-4", "3-5", "5-3", "5-6", "6-5", "6-7", "7-6", "7-8", "8-7"};
+        final String[] segments = { "2-1", "1-2", "3-2", "2-3", "3-4", "4-3", "3-7", "4-7", "7-4", "3-5", "5-3", "5-6", "6-5", "6-7", "7-6", "7-8", "8-7"};
 
         for (String segment : segments) {
             Pair<String, String> parsed = SegmentParser.parse(segment);
@@ -151,7 +151,7 @@ public class ScenarioRunner {
             Simulation.getScene ().addObject (intersection);
         }
 
-        RailwayTrain train = new RailwayTrain ("train_1", 100.0f, intersections[1]);
+        RailwayTrain train = new RailwayTrain ("train_1", 100.0f, intersections[0]);
         train.setSpeed (0.0f);
         train.setColor (0, 255, 0);
 
@@ -167,7 +167,7 @@ public class ScenarioRunner {
                 new RailwayIntersection ("intersection_2", new Vector2f (300, 400)),
                 new RailwayIntersection ("intersection_3", new Vector2f (500, 400)),
                 new RailwayIntersection ("intersection_4", new Vector2f (600, 200)),
-                new RailwayIntersection ("intersection_5", new Vector2f (600, 600)),
+                new RailwayIntersection ("intersection_5", new Vector2f (500, 600)),
                 new RailwayIntersection ("intersection_6", new Vector2f (700, 600)),
                 new RailwayIntersection ("intersection_7", new Vector2f (700, 400)),
                 new RailwayIntersection ("intersection_8", new Vector2f (900, 400)),
@@ -177,7 +177,7 @@ public class ScenarioRunner {
 
 
 
-        final String[] segments = { "2-1", "1-2", "3-2", "2-3", "3-4", "4-3", "4-7", "7-4", "3-5", "5-3", "5-6", "6-5", "6-7", "7-6", "7-8", "8-7"};
+        final String[] segments = { "2-1", "1-2", "3-2", "2-3", "3-4", "4-3", "3-7", "4-7", "7-4", "3-5", "5-3", "5-6", "6-5", "6-7", "7-6", "7-8", "8-7"};
 
         for (String segment : segments) {
             Pair<String, String> parsed = SegmentParser.parse(segment);
@@ -193,11 +193,15 @@ public class ScenarioRunner {
             Simulation.getScene ().addObject (intersection);
         }
 
-        RailwayTrain train = new RailwayTrain ("train_1", 100.0f, intersections[1]);
+        RailwayTrain train = new RailwayTrain ("train_1", 100.0f, intersections[0]);
         train.setSpeed (0.0f);
         train.setColor (0, 255, 0);
 
         Simulation.getScene ().addObject (train);
+
+        RailwaySegment segment = (RailwaySegment) Simulation.getScene().getObject("segment_3-7");
+        segment.setBroken(true);
+
 
     }
 }

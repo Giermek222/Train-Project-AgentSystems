@@ -45,11 +45,13 @@ public class ApplyNewRoute extends CyclicBehaviour {
                     return; //this message is displayed if there is no route available for our train
 
                 }
-                intersections = new LinkedList<>(route);
-                segemnts = new LinkedList<>(parseRoad(route));
-                train.setRoadStable(true);
+                train.intersections = new LinkedList<>(route);
+
+                train.segments = new LinkedList<>(parseRoad(route));
+
+
                 train.setColor(0,255,0);
-                myAgent.addBehaviour(StartRide.create(train, intersections, segemnts, train.getMaxSpeed()));
+                myAgent.addBehaviour(StartRide.create(train, train.intersections, train.segments, train.getMaxSpeed()));
             } catch (UnreadableException e) {
                 throw new RuntimeException(e);
             }

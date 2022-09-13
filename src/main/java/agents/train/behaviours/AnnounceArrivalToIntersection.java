@@ -50,15 +50,15 @@ public class AnnounceArrivalToIntersection extends CyclicBehaviour {
             }
             else
             {
-                System.out.println("sending message to next intersection:" + intersections.peek());
+                System.out.println("sending message to next intersection:" + train.intersections.peek());
                 final ACLMessage proposal = new ACLMessage(ACLMessage.INFORM);
                 TrainToIntersectionInfo messageContent = new TrainToIntersectionInfo();
                 messageContent.setMaxSpeed(train.getMaxSpeed());
                 messageContent.setPreviousIntersection(train.getPreviousIntersection().getName());
 
-                RailwayIntersection last = (RailwayIntersection) Simulation.getScene().getObject(intersections.peek());
+                RailwayIntersection last = (RailwayIntersection) Simulation.getScene().getObject(train.intersections.peek());
                 train.setPreviousIntersection(last);
-                proposal.addReceiver(new AID(intersections.remove(), AID.ISLOCALNAME));
+                proposal.addReceiver(new AID(train.intersections.remove(), AID.ISLOCALNAME));
 
                 try {
                     proposal.setContentObject(messageContent);

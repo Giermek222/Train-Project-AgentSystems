@@ -13,7 +13,7 @@ public class Trains {
         try
         {
             ScenarioEngine scenarioEngine = new ScenarioEngine();
-            scenarioEngine.runScenario(2);
+            scenarioEngine.runScenario(4);
         }
         catch ( FileNotFoundException | StaleProxyException e)
         {
@@ -25,7 +25,7 @@ public class Trains {
 
     private static void loadSimulation () {
         Simulation.restartScene ();
-        ScenarioRunner.RunScenario2();
+        ScenarioRunner.RunScenario3();
     }
 
     public static void main (String[] args) {
@@ -35,8 +35,8 @@ public class Trains {
         // we want to keep the main thread for our simulation rendering
         // this is because glfw does not behave well when it is run in non-main thread apparently
 
-//        Thread agentPlatformThread = new Thread (Trains::jadeThread);
-//        agentPlatformThread.start();
+        Thread agentPlatformThread = new Thread (Trains::jadeThread);
+        agentPlatformThread.start();
 
         // now, we want to start the simulation
         Simulation simulation = new Simulation ();

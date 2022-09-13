@@ -6,6 +6,9 @@ import simulation.GraphicsContext;
 import simulation.IRenderableObject;
 import simulation.SimulationObject;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
 import static org.lwjgl.nanovg.NanoVG.*;
 
 public class RailwayTrain extends SimulationObject implements IRenderableObject {
@@ -14,6 +17,10 @@ public class RailwayTrain extends SimulationObject implements IRenderableObject 
     private final float m_maxSpeed;
     private float m_speed;
     private NVGColor m_color;
+
+    public Queue<String> intersections = new ArrayDeque<>();
+
+    public Queue<String> segments = new ArrayDeque<>();
 
     private  boolean isRoadStable = true;
 
