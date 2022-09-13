@@ -1,6 +1,5 @@
 package agents.train.behaviours;
 
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -9,7 +8,6 @@ import model.messageparams.TrainRerouteParams;
 import planner.CentralizedPlanner;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 
@@ -25,19 +23,21 @@ public class AcknowledgeReroute extends CyclicBehaviour {
     private Queue<String> intersections;
 
     private String destination;
+    private CentralizedPlanner.RoutePriority priority;
 
 
-    public AcknowledgeReroute(RailwayTrain train, Queue<String> segments, Queue<String> intersections, String destination) {
+    public AcknowledgeReroute(RailwayTrain train, Queue<String> segments, Queue<String> intersections, String destination, CentralizedPlanner.RoutePriority priority) {
 
         this.train = train;
         this.segments = segments;
         this.intersections = intersections;
         this.destination = destination;
+        this.priority = priority;
 
     }
 
-    public static AcknowledgeReroute create( RailwayTrain train,  Queue<String> segments, Queue<String> intersections, String destination) {
-        return new AcknowledgeReroute(train, segments, intersections, destination);
+    public static AcknowledgeReroute create(RailwayTrain train, Queue<String> segments, Queue<String> intersections, String destination, CentralizedPlanner.RoutePriority priority) {
+        return new AcknowledgeReroute(train, segments, intersections, destination, priority);
     }
 
 
@@ -53,7 +53,7 @@ public class AcknowledgeReroute extends CyclicBehaviour {
             train.setColor(255,0,0);
 
 
-                TrainRerouteParams responseParams = new TrainRerouteParams( train.getMaxSpeed(), train.getPreviousIntersection().getName(), destination, CentralizedPlanner.RoutePriority.DEFAULT);
+                TrainRerouteParams responseParams = new TrainRerouteParams( train.getMaxSpeed(), train.getPreviousIntersection().getName(), destination, priority);
                 ACLMessage response = new ACLMessage(CONFIRM);
 
                 try {

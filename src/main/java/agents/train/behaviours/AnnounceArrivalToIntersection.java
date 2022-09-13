@@ -45,6 +45,8 @@ public class AnnounceArrivalToIntersection extends CyclicBehaviour {
             if (message.getContent().equals("final station"))
             {
                 train.setSpeed(0);
+                train.setColor(255,0,0);
+                myAgent.doDelete();
             }
             else
             {

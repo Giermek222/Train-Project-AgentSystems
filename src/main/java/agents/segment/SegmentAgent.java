@@ -16,7 +16,7 @@ public class SegmentAgent extends Agent {
 
         final Object[] params = getArguments();
         if (params.length != 3) {
-            System.out.println("Usage [segment name ], [first intersection], [second intersection]");
+            System.out.println("Usage [segment name ]");
             doDelete();
         }
         String name = params[0].toString();

@@ -1,15 +1,13 @@
 package agents.train.behaviours;
 
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 import model.RailwayTrain;
-import org.javatuples.Pair;
+import planner.CentralizedPlanner;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static jade.lang.acl.ACLMessage.PROPAGATE;
 

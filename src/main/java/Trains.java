@@ -25,7 +25,7 @@ public class Trains {
 
     private static void loadSimulation () {
         Simulation.restartScene ();
-        ScenarioRunner.RunScenario1();
+        ScenarioRunner.RunScenario2();
     }
 
     public static void main (String[] args) {
@@ -34,8 +34,9 @@ public class Trains {
         // create a thread to run jade in
         // we want to keep the main thread for our simulation rendering
         // this is because glfw does not behave well when it is run in non-main thread apparently
-        Thread agentPlatformThread = new Thread (Trains::jadeThread);
-        agentPlatformThread.start();
+
+//        Thread agentPlatformThread = new Thread (Trains::jadeThread);
+//        agentPlatformThread.start();
 
         // now, we want to start the simulation
         Simulation simulation = new Simulation ();
