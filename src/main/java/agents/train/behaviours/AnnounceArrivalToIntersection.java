@@ -11,29 +11,20 @@ import simulation.Simulation;
 
 import java.io.IOException;
 import java.util.Objects;
-import java.util.Queue;
 
+import static agents.AgentConstants.FINAL_STATION;
 import static jade.lang.acl.ACLMessage.CONFIRM;
 
 public class AnnounceArrivalToIntersection extends CyclicBehaviour {
     private final RailwayTrain train;
-
     private final MessageTemplate messageTemplate = MessageTemplate.MatchPerformative(CONFIRM);
-   private final Queue<String> intersections;
-   private final Queue<String> segmentrs;
-   private final Float currentSpeed;
 
-
-
-    public AnnounceArrivalToIntersection(RailwayTrain train, Queue<String> intersectionName, Queue<String> segmentName, float speed) {
+    public AnnounceArrivalToIntersection(RailwayTrain train) {
         this.train = train;
-        intersections = intersectionName;
-        segmentrs = segmentName;
-        currentSpeed = speed;
     }
 
-    public static AnnounceArrivalToIntersection create(RailwayTrain train, Queue<String> intersectionName, Queue<String> segment, float speed) {
-        return new AnnounceArrivalToIntersection(train, intersectionName, segment, speed);
+    public static AnnounceArrivalToIntersection create(RailwayTrain train) {
+        return new AnnounceArrivalToIntersection(train);
      }
 
     @Override
@@ -42,7 +33,7 @@ public class AnnounceArrivalToIntersection extends CyclicBehaviour {
 
         if (Objects.nonNull(message) && train.isRoadStable()) {
 
-            if (message.getContent().equals("final station"))
+            if (message.getContent().equals(FINAL_STATION))
             {
                 train.setSpeed(0);
                 train.setColor(255,0,0);

@@ -12,7 +12,7 @@ import java.util.Queue;
 import static org.lwjgl.nanovg.NanoVG.*;
 
 public class RailwayTrain extends SimulationObject implements IRenderableObject {
-    private final static NVGColor COlOR = GraphicsContext.colorFromRgb (11, 102, 52);
+    private static final NVGColor COlOR = GraphicsContext.colorFromRgb (11, 102, 52);
 
     private final float m_maxSpeed;
     private float m_speed;

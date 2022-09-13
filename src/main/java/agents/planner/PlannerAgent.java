@@ -8,7 +8,6 @@ import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
-import model.RailwayPlan;
 import planner.CentralizedPlanner;
 import util.GraphDescriptor;
 

@@ -10,17 +10,10 @@ import model.RailwayTrain;
 import planner.CentralizedPlanner;
 import simulation.Simulation;
 
-import java.util.*;
+import static agents.AgentConstants.TRAIN_DESCRIPTION;
 
 public class TrainAgent extends Agent {
-
-    private RailwayTrain train;
-    private final Queue<String> route_intersections = new ArrayDeque<>();
-    private final Queue<String> route_segments = new ArrayDeque<>();
-
     private String finalDestination;
-
-    private CentralizedPlanner.RoutePriority priority = CentralizedPlanner.RoutePriority.DEFAULT;
 
     @Override
     protected void setup() {
@@ -31,15 +24,15 @@ public class TrainAgent extends Agent {
             doDelete();
         }
         String trainName = params[0].toString();
-        train = (RailwayTrain) Simulation.getScene().getObject(trainName);
-
-
+        RailwayTrain train = (RailwayTrain) Simulation.getScene().getObject(trainName);
         String priorityName = params[1].toString();
 
+        CentralizedPlanner.RoutePriority priority;
         switch (priorityName) {
             case "DISTANCE" -> priority = CentralizedPlanner.RoutePriority.DISTANCE;
             case "COST" -> priority = CentralizedPlanner.RoutePriority.COST;
             case "LOAD" -> priority = CentralizedPlanner.RoutePriority.LOAD;
+            default -> priority = CentralizedPlanner.RoutePriority.DEFAULT;
         }
 
         for (int i = 2; i < params.length; ++i) {
@@ -56,7 +49,7 @@ public class TrainAgent extends Agent {
 
         for (String segment : train.segments) {
             final ServiceDescription serviceDescription = new ServiceDescription();
-            serviceDescription.setType("Passing");
+            serviceDescription.setType(TRAIN_DESCRIPTION);
             serviceDescription.setName(segment);
             description.addServices(serviceDescription);
         }
@@ -67,11 +60,11 @@ public class TrainAgent extends Agent {
         }
 
 
-        addBehaviour(AnnounceArrivalToIntersection.create(train, route_intersections, route_segments, train.getSpeed()));
-        addBehaviour(AdjustSpeed.create(train, route_segments));
-        addBehaviour(StartRide.create(train, route_intersections, route_segments, train.getSpeed()));
-        addBehaviour(AcknowledgeReroute.create(train, route_segments, route_intersections, finalDestination, priority));
-        addBehaviour(ApplyNewRoute.create(train, route_intersections, route_segments));
+        addBehaviour(AnnounceArrivalToIntersection.create(train));
+        addBehaviour(AdjustSpeed.create(train));
+        addBehaviour(StartRide.create(train));
+        addBehaviour(AcknowledgeReroute.create(train, finalDestination, priority));
+        addBehaviour(ApplyNewRoute.create(train));
 
 
 

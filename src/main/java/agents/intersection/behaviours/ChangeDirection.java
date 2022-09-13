@@ -7,6 +7,7 @@ import model.RailwayIntersection;
 
 import java.util.Objects;
 
+import static agents.AgentConstants.FINAL_STATION;
 import static jade.lang.acl.ACLMessage.AGREE;
 
 public class ChangeDirection extends CyclicBehaviour {
@@ -30,10 +31,11 @@ public class ChangeDirection extends CyclicBehaviour {
         if (Objects.nonNull(message)) {
             final ACLMessage response = new ACLMessage(ACLMessage.CONFIRM);
             final String segment = message.getContent();
-            if (segment.equals("Final station"))
+
+            if (segment.equals(FINAL_STATION))
             {
                 System.out.println("[" + myAgent.getLocalName() + "] This train will be stopping here ");
-                response.setContent("final station");
+                response.setContent(FINAL_STATION);
             }
             else
             {
@@ -41,10 +43,6 @@ public class ChangeDirection extends CyclicBehaviour {
                 System.out.println("[" + myAgent.getLocalName() + "] Switching to " + segment);
                 response.setContent("Not final station");
             }
-
-
-
-
             response.addReceiver(message.getSender());
             myAgent.send(response);
 

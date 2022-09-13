@@ -1,12 +1,8 @@
 package simulation;
 
-import model.RailwayIntersection;
 import model.RailwaySegment;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.GLFWKeyCallbackI;
-import org.lwjgl.glfw.GLFWMouseButtonCallback;
-import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 import org.lwjgl.opengl.GL;
 
 import java.nio.DoubleBuffer;
@@ -41,7 +37,7 @@ public class Simulation {
 
         boolean isShiftClick = (mods & GLFW_MOD_SHIFT) == GLFW_MOD_SHIFT;
         boolean isAltClick = (mods & GLFW_MOD_ALT) == GLFW_MOD_ALT;
-        boolean isCtrlClick = (mods & GLFW_MOD_CONTROL) == GLFW_MOD_CONTROL;
+
 
         // lmb shift click deletes a segment
         Vector2f p0 = new Vector2f ((float) mouseX, (float) mouseY);
@@ -59,10 +55,10 @@ public class Simulation {
 
                     if (distFromLine < 7) {
                         if (isShiftClick) {
-                            System.out.printf ("break segment %s\n", segment.getName ());
+                            System.out.printf ("break segment %s%n", segment.getName ());
                             segment.setBroken (true);
                         } else {
-                            System.out.printf ("repair segment %s\n", segment.getName ());
+                            System.out.printf ("repair segment %s%n", segment.getName ());
                             segment.setBroken (false);
                         }
 
@@ -114,7 +110,9 @@ public class Simulation {
 
         GL.createCapabilities ();
 
-        long lastTick = System.currentTimeMillis (), tick, elapsed;
+        long lastTick = System.currentTimeMillis();
+        long tick;
+        long elapsed;
         float deltaTime;
 
         // handle for nanovg
@@ -123,7 +121,7 @@ public class Simulation {
         GraphicsContext context = new GraphicsContext (m_window);
         while (!glfwWindowShouldClose (m_window)) {
             // calculate delta time
-            tick = System.currentTimeMillis ();
+            tick = System.currentTimeMillis();
             elapsed = tick - lastTick;
             lastTick = tick;
             deltaTime = elapsed / 1000f;

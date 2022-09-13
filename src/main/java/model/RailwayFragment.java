@@ -12,13 +12,9 @@ public abstract class RailwayFragment extends SimulationObject {
     public abstract float getLength ();
     public abstract RailwayFragment getNextFragment ();
 
-    public RailwayFragment (String name) {
+    protected RailwayFragment (String name) {
         super (name);
         m_trains = new HashSet<> ();
-    }
-
-    public int countTrains () {
-        return m_trains.size ();
     }
 
     public Iterator<RailwayTrain> trains () {
@@ -33,7 +29,7 @@ public abstract class RailwayFragment extends SimulationObject {
         if (m_trains.contains (train)) {
             m_trains.remove (train);
         } else {
-            throw new RuntimeException (String.format ("train %s was not in %s\n", train.getName (), getName ()));
+            throw new RuntimeException (String.format ("train %s was not in %s%n", train.getName (), getName ()));
         }
     }
 }
