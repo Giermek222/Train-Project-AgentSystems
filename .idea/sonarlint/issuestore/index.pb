@@ -17,8 +17,6 @@ X
 (src/main/java/model/RailwayFragment.java,c\5\c56964571f6eea6bfa59d582d37e0a7d94838d08
 \
 ,src/main/java/model/RailwayIntersection.java,5\1\51d51c0635fb20c341f2ded4f7796c23622c2643
-W
-'src/main/java/model/RailwaySegment.java,b\e\be5ca631f9cbe57fba905d89a247bf39aba047eb
 U
 %src/main/java/model/RailwayTrain.java,8\3\83d5f71147ebf17bda45d4a94e83788f4727a1ff
 i

@@ -13,7 +13,7 @@ public class Trains {
         try
         {
             ScenarioEngine scenarioEngine = new ScenarioEngine();
-            scenarioEngine.runScenario(3);
+            scenarioEngine.runScenario(1);
         }
         catch ( FileNotFoundException | StaleProxyException e)
         {
@@ -25,7 +25,7 @@ public class Trains {
 
     private static void loadSimulation () {
         Simulation.restartScene ();
-        ScenarioRunner.RunScenario3();
+        ScenarioRunner.RunScenario1();
     }
 
     public static void main (String[] args) {
