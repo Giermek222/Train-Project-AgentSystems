@@ -1,5 +1,6 @@
 package agents.train.behaviours;
 
+import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -10,8 +11,7 @@ import planner.CentralizedPlanner;
 import java.io.IOException;
 import java.util.Objects;
 
-import static jade.lang.acl.ACLMessage.CONFIRM;
-import static jade.lang.acl.ACLMessage.PROPOSE;
+import static jade.lang.acl.ACLMessage.*;
 
 public class AcknowledgeReroute extends CyclicBehaviour {
     private final MessageTemplate messageTemplate = MessageTemplate.MatchPerformative(PROPOSE);
@@ -38,6 +38,12 @@ public class AcknowledgeReroute extends CyclicBehaviour {
 
         if (Objects.nonNull(message))
         {
+
+            ACLMessage disqualifyRoute = new ACLMessage(INFORM_IF);
+            disqualifyRoute.addReceiver(new AID("planner", AID.ISLOCALNAME));
+            disqualifyRoute.setContent(train.getName());
+            myAgent.send(disqualifyRoute);
+
             train.setSpeed(0);
             train.setColor(255,0,0);
             TrainRerouteParams responseParams = new TrainRerouteParams( train.getMaxSpeed(), train.getPreviousIntersection().getName(), destination, priority);

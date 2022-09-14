@@ -16,7 +16,7 @@ public class RailwayIntersection extends RailwayFragment implements IPositionedO
 
     @Override
     public float getLength () {
-        return 50.0f;
+        return 10.0f;
     }
     private static final NVGColor COlOR = GraphicsContext.colorFromRgb (255, 0, 0);
 

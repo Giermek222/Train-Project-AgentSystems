@@ -1,6 +1,10 @@
 package agents.train.behaviours;
 
 import jade.core.behaviours.CyclicBehaviour;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
@@ -11,19 +15,22 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import static agents.AgentConstants.TRAIN_DESCRIPTION;
 import static jade.lang.acl.ACLMessage.PROPAGATE;
 
 
 public class ApplyNewRoute extends CyclicBehaviour {
     private final MessageTemplate messageTemplate = MessageTemplate.MatchPerformative(PROPAGATE);
     RailwayTrain train;
+    DFAgentDescription oldDescription;
 
-    public static ApplyNewRoute create(RailwayTrain train) {
-        return new ApplyNewRoute(train);
+    public static ApplyNewRoute create(RailwayTrain train, DFAgentDescription description) {
+        return new ApplyNewRoute(train, description);
     }
 
-    public ApplyNewRoute(RailwayTrain train) {
+    public ApplyNewRoute(RailwayTrain train, DFAgentDescription desc) {
         this.train = train;
+        oldDescription = desc;
 
     }
 
@@ -45,7 +52,22 @@ public class ApplyNewRoute extends CyclicBehaviour {
                 train.segments = new LinkedList<>(parseRoad(route));
                 train.setColor(0,255,0);
                 myAgent.addBehaviour(StartRide.create(train));
-            } catch (UnreadableException e) {
+
+                DFService.deregister(myAgent, oldDescription);
+
+                final DFAgentDescription description = new DFAgentDescription();
+                description.setName(myAgent.getAID());
+
+                for (String segment : train.segments) {
+                    final ServiceDescription serviceDescription = new ServiceDescription();
+                    serviceDescription.setType(TRAIN_DESCRIPTION);
+                    serviceDescription.setName(segment);
+                    description.addServices(serviceDescription);
+
+                }
+                DFService.register(myAgent, description);
+                oldDescription = description;
+            } catch (UnreadableException | FIPAException e) {
                 throw new RuntimeException(e);
             }
 

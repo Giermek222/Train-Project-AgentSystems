@@ -64,7 +64,7 @@ public class TrainAgent extends Agent {
         addBehaviour(AdjustSpeed.create(train));
         addBehaviour(StartRide.create(train));
         addBehaviour(AcknowledgeReroute.create(train, finalDestination, priority));
-        addBehaviour(ApplyNewRoute.create(train));
+        addBehaviour(ApplyNewRoute.create(train, description));
 
 
 

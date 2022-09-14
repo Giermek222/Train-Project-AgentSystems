@@ -13,7 +13,7 @@ public class SegmentAgent extends Agent {
         super.setup();
 
         final Object[] params = getArguments();
-        if (params.length != 3) {
+        if (params.length < 1) {
             System.out.println("Usage [segment name ]");
             doDelete();
         }
