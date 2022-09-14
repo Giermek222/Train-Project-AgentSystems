@@ -13,7 +13,7 @@ public class Trains {
         try
         {
             ScenarioEngine scenarioEngine = new ScenarioEngine();
-            scenarioEngine.runScenario(1);
+            scenarioEngine.runScenario(0);
         }
         catch ( FileNotFoundException | StaleProxyException e)
         {
@@ -25,7 +25,12 @@ public class Trains {
 
     private static void loadSimulation () {
         Simulation.restartScene ();
-        ScenarioRunner.RunScenario1();
+        ScenarioRunner.RunScenario0();
+        //ScenarioRunner.RunScenario1(); //scenario 1 overview of messaging used for simulating movement
+        //ScenarioRunner.RunScenario2(); //scenario 2 showcase negotiation between agents regarding speed
+        //ScenarioRunner.RunScenario3(); // scenario 3 and 4. Comparison of pathfinding algorithm for cost and distance
+        //ScenarioRunner.RunScenario4(); // scenario 5 and 6. Comparison of pathfinding algorithm for load and distance
+
     }
 
     public static void main (String[] args) {

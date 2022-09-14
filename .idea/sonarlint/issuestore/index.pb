@@ -1,22 +1,10 @@
 
-q
-Asrc/main/java/agents/intersection/behaviours/ChangeDirection.java,1\4\14f0bf5efc38882b96b8a7bc2c236ccc04435a1b
-t
-Dsrc/main/java/agents/intersection/behaviours/ReceiveArrivalInfo.java,e\0\e05e50eacdee0cf0c0db8d2499fbe83847a36e9e
 h
 8src/main/java/agents/intersection/InsersectionAgent.java,3\d\3d3d8b4a78d61a535e94ab1e7827ac9ac1ec7fdc
 h
 8src/main/java/agents/segment/behaviours/CheckHealth.java,1\7\1790143c6391a698968549bda665c98e5e0c963b
-f
-6src/main/java/agents/train/behaviours/AdjustSpeed.java,4\6\4642f659383e7b823ae0a14a64f1509ec21fdefc
-h
-8src/main/java/agents/train/behaviours/ApplyNewRoute.java,1\e\1e4f09b483c605365eaab66f7f2ec0382e95ff65
-X
-(src/main/java/agents/AgentConstants.java,6\5\654600b41f9c097ee8b7863ada603445c956611b
 X
 (src/main/java/model/RailwayFragment.java,c\5\c56964571f6eea6bfa59d582d37e0a7d94838d08
-\
-,src/main/java/model/RailwayIntersection.java,5\1\51d51c0635fb20c341f2ded4f7796c23622c2643
 U
 %src/main/java/model/RailwayTrain.java,8\3\83d5f71147ebf17bda45d4a94e83788f4727a1ff
 i
